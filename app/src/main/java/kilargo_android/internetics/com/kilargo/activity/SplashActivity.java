@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 
 import kilargo_android.internetics.com.kilargo.R;
@@ -29,6 +30,10 @@ public class SplashActivity  extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Logger
+                .init()
+                .logLevel(LogLevel.NONE);
 
         collectDeviceInfoForDebugging();
 
