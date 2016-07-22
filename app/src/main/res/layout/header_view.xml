@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:tools="http://schemas.android.com/tools"
+       xmlns:android="http://schemas.android.com/apk/res/android"
+       tools:showIn="@layout/fragment_main">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:text="Back"
+            android:layout_marginTop="10dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:gravity="left|center_vertical"
+            android:drawableLeft="@drawable/left_arrow"
+            android:id="@+id/back_textview"/>
+
+        <ImageView
+            android:layout_width="195dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:id="@+id/imageView"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal"/>
+
+        <Button
+            android:id="@+id/refresh_button"
+            android:visibility="invisible"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="right"
+            android:background="@drawable/refresh"
+            android:textSize="13sp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"/>
+
+    </FrameLayout>
+
+</merge>

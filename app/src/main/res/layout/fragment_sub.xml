@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<kilargo_android.internetics.com.kilargo.widget.BaseLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    tools:context=".activity.MainActivity">
+
+
+    <include layout="@layout/header_view"/>
+
+    <ImageView
+        android:layout_width="195dp"
+        android:layout_height="67dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/banner"
+        android:src="@mipmap/logo"
+        android:layout_gravity="center_horizontal"/>
+
+    <include layout="@layout/search_bar"/>
+
+    <ListView
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listview"/>
+</kilargo_android.internetics.com.kilargo.widget.BaseLinearLayout>

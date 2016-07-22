@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<kilargo_android.internetics.com.kilargo.widget.BaseLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    tools:context=".activity.MainActivity">
+
+
+    <include layout="@layout/header_view"/>
+
+    <ImageView
+        android:layout_width="195dp"
+        android:layout_height="67dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/banner"
+        android:src="@mipmap/logo"
+        android:layout_gravity="center_horizontal"/>
+
+    <include layout="@layout/search_bar"/>
+
+    <FrameLayout
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.view.ViewPager
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="40dp"
+            android:background="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/carouse_height"
+            android:id="@+id/viewpager">
+        </android.support.v4.view.ViewPager>
+
+        <Button
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:gravity="left|top"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/info"
+            android:id="@+id/product_info_button"/>
+
+        <ImageView
+            android:layout_marginLeft="5dp"
+            android:layout_width="10dp"
+            android:layout_height="20dp"
+            android:id="@+id/pager_left_arrow"
+            android:layout_gravity="left|center_vertical"
+            android:background="@drawable/left_arrow"/>
+
+        <ImageView
+            android:layout_marginRight="5dp"
+            android:layout_width="10dp"
+            android:layout_height="20dp"
+            android:id="@+id/pager_right_arrow"
+            android:layout_gravity="right|center_vertical"
+            android:background="@drawable/right_arrow"/>
+
+
+        <FrameLayout
+            android:background="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            android:id="@+id/product_info_bg_mask">
+
+            <RelativeLayout
+                android:alpha="0"
+                android:id="@+id/product_info_board"
+                android:layout_gravity="bottom|center_horizontal"
+                android:background="@drawable/rounded_product_info_bg"
+                android:layout_width="300dp"
+                android:layout_height="150dp">
+
+                <TextView
+                    android:layout_margin="10dp"
+                    android:textSize="14sp"
+                    android:id="@+id/product_info_board_textview"
+                    android:text="this is a test test test test test test,this is a test test test test test test,this is a test test test test test test,"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/info"/>
+
+            </RelativeLayout>
+
+        </FrameLayout>
+
+
+
+
+
+    </FrameLayout>
+
+
+</kilargo_android.internetics.com.kilargo.widget.BaseLinearLayout>

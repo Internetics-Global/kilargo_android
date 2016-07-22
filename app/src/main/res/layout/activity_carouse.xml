@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<kilargo_android.internetics.com.kilargo.widget.BaseFrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FF464646"
+    android:id="@+id/carousel_layout"
+    tools:context=".activity.MainActivity">
+
+    <HorizontalScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/carouse_height"
+        android:scrollbars="horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center">
+
+        <LinearLayout
+            android:id="@+id/ll"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"></LinearLayout>
+
+    </HorizontalScrollView>
+
+
+
+
+</kilargo_android.internetics.com.kilargo.widget.BaseFrameLayout>
