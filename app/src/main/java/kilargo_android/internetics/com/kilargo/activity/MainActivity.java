@@ -208,6 +208,8 @@ public class MainActivity extends BaseActivity {
 
         closeDrawer();
 
+        getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
         Fragment newFragment = new SettingFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, newFragment);
@@ -221,6 +223,8 @@ public class MainActivity extends BaseActivity {
     public void aboutButtonClicked() {
 
         closeDrawer();
+
+        getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         Fragment newFragment = new AboutFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();

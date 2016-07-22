@@ -20,7 +20,6 @@ import kilargo_android.internetics.com.kilargo.activity.MainActivity;
 
 public class MoreFragment extends Fragment {
 
-    @Bind(R.id.clerk_name)                   TextView       mClerkNameTextView;
     @Bind(R.id.avatar_image)                   ImageView       mClerkAvatarImageView;
     @Bind(R.id.button_setting_setting)                   Button       mSettingButton;
     @Bind(R.id.button_setting_about)                   Button       mAboutButton;

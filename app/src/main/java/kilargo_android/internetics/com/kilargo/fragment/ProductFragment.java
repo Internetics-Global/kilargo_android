@@ -49,6 +49,8 @@ public class ProductFragment extends Fragment implements ViewPager.OnPageChangeL
     @Bind(R.id.product_info_button)           Button    mProductInfoButton;
 
     @Bind(R.id.product_info_board_textview)   TextView  mProductInfoBoardTextView;
+    @Bind(R.id.product_info_board_title_textview)   TextView  mProductInfoBoardTitleTextView;
+    @Bind(R.id.product_info_board_appendix_textview)   TextView  mProductInfoBoardAppendixTextView;
     @Bind(R.id.product_info_board)            ViewGroup  mProductInfoBoard;
     @Bind(R.id.product_info_bg_mask)          ViewGroup  mProductInfoBgMask;
 
@@ -288,6 +290,8 @@ public class ProductFragment extends Fragment implements ViewPager.OnPageChangeL
 
     private void updateProductBoardContent() {
         mProductInfoBoardTextView.setText(mProductList.get(mCurrentPage).mNotes);
+        mProductInfoBoardTitleTextView.setText(mProductList.get(mCurrentPage).mProductName);
+        mProductInfoBoardAppendixTextView.setText(mProductList.get(mCurrentPage).mBuildingElement);
     }
 
 

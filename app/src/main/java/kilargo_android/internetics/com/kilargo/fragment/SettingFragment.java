@@ -1,6 +1,7 @@
 package kilargo_android.internetics.com.kilargo.fragment;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -42,7 +43,7 @@ public class SettingFragment extends Fragment {
         mBackTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFragmentManager().popBackStackImmediate();
+                getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
         });
 
