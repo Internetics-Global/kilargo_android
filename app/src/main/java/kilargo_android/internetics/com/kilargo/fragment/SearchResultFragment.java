@@ -138,7 +138,6 @@ public class SearchResultFragment extends Fragment {
                 R.animator.fragment_slide_pop_enter,
                 R.animator.fragment_slide_pop_exit);
         transaction.replace(R.id.fragment_container, newFragment);
-        transaction.addToBackStack("ProductFragment");
         transaction.commit();
 
     }
