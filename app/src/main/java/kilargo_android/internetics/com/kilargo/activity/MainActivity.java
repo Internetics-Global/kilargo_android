@@ -61,6 +61,19 @@ public class MainActivity extends BaseActivity {
                     .add(R.id.left_drawer, moreFragment).commit();
         }
 
+
+        getFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                Logger.d("onBackStackChanged");
+                if (getFragmentManager().getBackStackEntryCount() == 0) {
+                    final Fragment mainFragment = new MainFragment();
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, mainFragment,"MainFragment").commit();
+                }
+            }
+        });
+
     }
 
     @Override
@@ -208,7 +221,7 @@ public class MainActivity extends BaseActivity {
 
         closeDrawer();
 
-        getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        getFragmentManager().popBackStack("MainFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         Fragment newFragment = new SettingFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -224,7 +237,7 @@ public class MainActivity extends BaseActivity {
 
         closeDrawer();
 
-        getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        getFragmentManager().popBackStack("MainFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         Fragment newFragment = new AboutFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();

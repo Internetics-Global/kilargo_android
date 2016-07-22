@@ -143,6 +143,11 @@ public class SearchResultFragment extends Fragment {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
     public void onDestroy() {
         Logger.d("onDestroy");
         super.onDestroy();
