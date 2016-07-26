@@ -2,14 +2,12 @@ package kilargo_android.internetics.com.kilargo.fragment;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +40,7 @@ import kilargo_android.internetics.com.kilargo.util.AppContext;
 /**
  * Created by BourneWang on 22/04/2016.
  */
-public class ProductFragment extends Fragment implements ViewPager.OnPageChangeListener {
+public class ProductFragment extends BaseFragment implements ViewPager.OnPageChangeListener {
 
     @Bind(R.id.search_textview)               TextView mSearchView;
     @Bind(R.id.viewpager)                     ViewPager mViewPager;
@@ -103,7 +101,7 @@ public class ProductFragment extends Fragment implements ViewPager.OnPageChangeL
             public void onClick(View view) {
                 SearchResultFragment newFragment = new SearchResultFragment();
 
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container, newFragment);
                 transaction.addToBackStack("SearchResultFragment");
                 transaction.commit();
@@ -144,7 +142,7 @@ public class ProductFragment extends Fragment implements ViewPager.OnPageChangeL
 
     private void backButtonClicked() {
 
-        getFragmentManager().popBackStack();
+        getActivity().getSupportFragmentManager().popBackStack();
 
     }
 

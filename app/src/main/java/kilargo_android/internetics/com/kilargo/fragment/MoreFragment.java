@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 import kilargo_android.internetics.com.kilargo.R;
 import kilargo_android.internetics.com.kilargo.activity.MainActivity;
 
-public class MoreFragment extends Fragment {
+public class MoreFragment extends BaseFragment {
 
     @Bind(R.id.avatar_image)                   ImageView       mClerkAvatarImageView;
     @Bind(R.id.button_setting_setting)                   Button       mSettingButton;

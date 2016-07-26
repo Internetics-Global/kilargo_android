@@ -38,4 +38,15 @@ public class BaseFrameLayout extends FrameLayout {
         final int width = getWidth();
         setX((width > 0) ? (xFraction * width) : -9999);
     }
+
+    public float getYFraction() {
+        final int height = getHeight();
+        if (height != 0) return getY() / getHeight();
+        else return getY();
+    }
+
+    public void setYFraction(final float fraction) {
+        final int height = getHeight();
+        setY((height > 0) ? (fraction * height) : -9999);
+    }
 }

@@ -1,10 +1,9 @@
 package kilargo_android.internetics.com.kilargo.fragment;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,7 @@ import kilargo_android.internetics.com.kilargo.model.Product;
 /**
  * Created by BourneWang on 22/04/2016.
  */
-public class SubFragment extends Fragment {
+public class SubFragment extends BaseFragment {
 
     @Bind(R.id.search_textview)       TextView mSearchView;
     @Bind(R.id.listview)   ListView   mListView;
@@ -96,7 +95,7 @@ public class SubFragment extends Fragment {
             public void onClick(View view) {
                 SearchResultFragment newFragment = new SearchResultFragment();
 
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container, newFragment);
                 transaction.addToBackStack("SearchResultFragment");
                 transaction.commit();
@@ -112,7 +111,7 @@ public class SubFragment extends Fragment {
         mBackTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFragmentManager().popBackStackImmediate();
+                getActivity().getSupportFragmentManager().popBackStackImmediate();
             }
         });
 
@@ -129,11 +128,11 @@ public class SubFragment extends Fragment {
         List<Product> products = JsonFetcher.sharedFetcher().getProductsWithSubcategoryName(mCategories.get(i));
         newFragment.setProductList(products);
 
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.animator.fragment_slide_left_enter,
-                R.animator.fragment_slide_left_exit,
-                R.animator.fragment_slide_pop_enter,
-                R.animator.fragment_slide_pop_exit);
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.fragment_slide_left_enter,
+                R.anim.fragment_slide_left_exit,
+                R.anim.fragment_slide_pop_enter,
+                R.anim.fragment_slide_pop_exit);
         transaction.replace(R.id.fragment_container, newFragment);
         transaction.addToBackStack("ProductFragment");
         transaction.commit();

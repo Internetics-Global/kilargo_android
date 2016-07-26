@@ -1,9 +1,9 @@
 package kilargo_android.internetics.com.kilargo.activity;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
 import android.widget.FrameLayout;
@@ -27,7 +27,7 @@ import kilargo_android.internetics.com.kilargo.fragment.MoreFragment;
 import kilargo_android.internetics.com.kilargo.fragment.SettingFragment;
 import kilargo_android.internetics.com.kilargo.util.AppContext;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements android.support.v4.app.FragmentManager.OnBackStackChangedListener{
 
     /*
      * Network monitor (reachability)
@@ -52,27 +52,17 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         if (savedInstanceState == null) {
-            final Fragment mainFragment = new MainFragment();
-            getFragmentManager().beginTransaction()
+            final android.support.v4.app.Fragment mainFragment = new MainFragment();
+            getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, mainFragment,"MainFragment").commit();
 
             final MoreFragment moreFragment = new MoreFragment();
-            getFragmentManager().beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .add(R.id.left_drawer, moreFragment).commit();
         }
 
 
-        getFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-            @Override
-            public void onBackStackChanged() {
-                Logger.d("onBackStackChanged");
-                if (getFragmentManager().getBackStackEntryCount() == 0) {
-                    final Fragment mainFragment = new MainFragment();
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, mainFragment,"MainFragment").commit();
-                }
-            }
-        });
+        getSupportFragmentManager().addOnBackStackChangedListener(this);
 
     }
 
@@ -106,7 +96,7 @@ public class MainActivity extends BaseActivity {
         AppContext myApp = (AppContext)this.getApplication();
         if (myApp.wasInBackground == false)
         {
-            FragmentManager fragmentManager = getFragmentManager();
+            FragmentManager fragmentManager = getSupportFragmentManager();
             String targetFragmentTag = "MainFragment";
             MainFragment myFragment = (MainFragment) fragmentManager.findFragmentByTag(targetFragmentTag);
             if (myFragment != null) {
@@ -159,8 +149,8 @@ public class MainActivity extends BaseActivity {
     //http://stackoverflow.com/questions/23728216/back-button-closing-app-even-when-using-fragmenttransaction-addtobackstack
     @Override
     public void onBackPressed() {
-        if(getFragmentManager().getBackStackEntryCount() >= 0) {
-            getFragmentManager().popBackStack();
+        if(getSupportFragmentManager().getBackStackEntryCount() >= 0) {
+            getSupportFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
         }
@@ -221,10 +211,10 @@ public class MainActivity extends BaseActivity {
 
         closeDrawer();
 
-        getFragmentManager().popBackStack("MainFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        getSupportFragmentManager().popBackStack("MainFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         Fragment newFragment = new SettingFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, newFragment);
         transaction.addToBackStack("AboutFragment");
         transaction.commit();
@@ -237,14 +227,48 @@ public class MainActivity extends BaseActivity {
 
         closeDrawer();
 
-        getFragmentManager().popBackStack("MainFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        getSupportFragmentManager().popBackStack("MainFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         Fragment newFragment = new AboutFragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, newFragment);
         transaction.addToBackStack("AboutFragment");
         transaction.commit();
 
     }
 
+    /*
+     * 发现实际中,back stack会有问题,不知道是否是系统的bug,所以需要如下额外的逻辑进行处理.
+     */
+    static int LAST_STACK_ENTRY_COUNT = -1;
+    @Override
+    public void onBackStackChanged() {
+
+        Logger.d("onBackStackChanged");
+
+        FragmentManager fm = getSupportFragmentManager();
+
+        //由于onBackStackChanged 是在stack内容变化时被回调,而我们只是希望在back时才执行.
+        if (LAST_STACK_ENTRY_COUNT <= fm.getBackStackEntryCount()) {
+            LAST_STACK_ENTRY_COUNT =  fm.getBackStackEntryCount();
+//            return;
+        } else {
+            LAST_STACK_ENTRY_COUNT =  fm.getBackStackEntryCount();
+        }
+
+        if (fm.getBackStackEntryCount() == 0) {
+            final Fragment mainFragment = new MainFragment();
+            fm.beginTransaction()
+                    .replace(R.id.fragment_container, mainFragment,"MainFragment").commit();
+        } else {
+
+//            FragmentManager.BackStackEntry backEntry=fm.getBackStackEntryAt(fm.getBackStackEntryCount()-1);
+//            String str=backEntry.getName();
+//
+//            if (str.equals("SearchResultFragment")) {
+//                fm.popBackStack();
+//            }
+        }
+
+    }
 }

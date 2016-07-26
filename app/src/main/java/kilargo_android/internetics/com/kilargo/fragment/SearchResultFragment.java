@@ -1,14 +1,15 @@
 package kilargo_android.internetics.com.kilargo.fragment;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -37,11 +38,12 @@ import kilargo_android.internetics.com.kilargo.model.JsonFetcher;
 import kilargo_android.internetics.com.kilargo.model.Menu;
 import kilargo_android.internetics.com.kilargo.model.Product;
 import kilargo_android.internetics.com.kilargo.model.SubMenu;
+import kilargo_android.internetics.com.kilargo.util.FragmentUtils;
 
 /**
  * Created by BourneWang on 28/04/2016.
  */
-public class SearchResultFragment extends Fragment {
+public class SearchResultFragment extends BaseFragment {
 
     @Bind(R.id.searchView)       SearchView mSearchView;
     @Bind(R.id.cancel_button)    Button     mCancelButton;
@@ -121,7 +123,9 @@ public class SearchResultFragment extends Fragment {
         getActivity().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
-        getFragmentManager().popBackStack();
+        FragmentUtils.sDisableFragmentAnimations = true;
+        getActivity().getSupportFragmentManager().popBackStackImmediate();
+        FragmentUtils.sDisableFragmentAnimations = false;
     }
 
     private void listItemClicked(int i) {
@@ -132,11 +136,11 @@ public class SearchResultFragment extends Fragment {
 
         ProductFragment newFragment = new ProductFragment();
         newFragment.setProductList(Arrays.asList(selectedProduct));
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.animator.fragment_slide_left_enter,
-                R.animator.fragment_slide_left_exit,
-                R.animator.fragment_slide_pop_enter,
-                R.animator.fragment_slide_pop_exit);
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.fragment_slide_left_enter,
+                R.anim.fragment_slide_left_exit,
+                R.anim.fragment_slide_pop_enter,
+                R.anim.fragment_slide_pop_exit);
         transaction.replace(R.id.fragment_container, newFragment);
         transaction.commit();
 
@@ -153,6 +157,5 @@ public class SearchResultFragment extends Fragment {
         super.onDestroy();
 
     }
-
 
 }

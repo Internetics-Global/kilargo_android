@@ -17,7 +17,7 @@ import kilargo_android.internetics.com.kilargo.R;
 /**
  * Created by BourneWang on 6/07/2016.
  */
-public class AboutFragment extends Fragment {
+public class AboutFragment extends BaseFragment {
 
     @Bind(R.id.back_textview)    TextView mBackTextView;
 
@@ -44,7 +44,7 @@ public class AboutFragment extends Fragment {
         mBackTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
         });
 

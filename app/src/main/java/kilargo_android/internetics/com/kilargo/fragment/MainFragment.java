@@ -1,7 +1,5 @@
 package kilargo_android.internetics.com.kilargo.fragment;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -9,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -41,7 +40,7 @@ import kilargo_android.internetics.com.kilargo.widget.AVLoadingIndicatorDialog;
 /**
  * Created by BourneWang on 22/04/2016.
  */
-public class MainFragment extends Fragment {
+public class MainFragment extends BaseFragment {
 
     @Bind(R.id.search_textview)     TextView   mSearchView;
     @Bind(R.id.listview)            ListView   mListView;
@@ -94,8 +93,11 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 SearchResultFragment newFragment = new SearchResultFragment();
-
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.anim.fragment_slide_bottom_enter,
+                         R.anim.fragment_slide_bottom_exit,
+                        R.anim.fragment_slide_pop_enter,
+                        R.anim.fragment_slide_pop_exit);
                 transaction.replace(R.id.fragment_container, newFragment);
                 transaction.addToBackStack("SearchResultFragment");
                 transaction.commit();
@@ -141,11 +143,11 @@ public class MainFragment extends Fragment {
 
         ProductFragment newFragment = new ProductFragment();
 
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.animator.fragment_slide_left_enter,
-                R.animator.fragment_slide_left_exit,
-                R.animator.fragment_slide_pop_enter,
-                R.animator.fragment_slide_pop_exit);
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.fragment_slide_left_enter,
+                R.anim.fragment_slide_left_exit,
+                R.anim.fragment_slide_pop_enter,
+                R.anim.fragment_slide_pop_exit);
         transaction.replace(R.id.fragment_container, newFragment);
         transaction.addToBackStack("ProductFragment");
         transaction.commit();
@@ -160,11 +162,11 @@ public class MainFragment extends Fragment {
         SubFragment newFragment = new SubFragment();
         newFragment.setParentCategoryName(categories.get(i));
 
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.animator.fragment_slide_left_enter,
-                R.animator.fragment_slide_left_exit,
-                R.animator.fragment_slide_pop_enter,
-                R.animator.fragment_slide_pop_exit);
+        FragmentTransaction transaction =  getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.fragment_slide_left_enter,
+                R.anim.fragment_slide_left_exit,
+                R.anim.fragment_slide_pop_enter,
+                R.anim.fragment_slide_pop_exit);
         transaction.replace(R.id.fragment_container, newFragment);
         transaction.addToBackStack("SubFragment");
         transaction.commit();
