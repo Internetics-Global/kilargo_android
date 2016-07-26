@@ -1,7 +1,5 @@
 package kilargo_android.internetics.com.kilargo.fragment;
 
-import android.app.ActionBar;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;

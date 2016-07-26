@@ -1,6 +1,5 @@
 package kilargo_android.internetics.com.kilargo.fragment;
 
-import android.animation.Animator;
 import android.support.v4.app.Fragment;
 import android.view.animation.Animation;
 

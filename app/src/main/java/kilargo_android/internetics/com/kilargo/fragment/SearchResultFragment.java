@@ -1,6 +1,5 @@
 package kilargo_android.internetics.com.kilargo.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
@@ -8,22 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.base.Strings;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 import com.orhanobut.logger.Logger;
-import com.squareup.moshi.Json;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,12 +21,9 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import kilargo_android.internetics.com.kilargo.R;
-import kilargo_android.internetics.com.kilargo.adapter.KKListAdapter;
 import kilargo_android.internetics.com.kilargo.adapter.SearchAdapter;
 import kilargo_android.internetics.com.kilargo.model.JsonFetcher;
-import kilargo_android.internetics.com.kilargo.model.Menu;
 import kilargo_android.internetics.com.kilargo.model.Product;
-import kilargo_android.internetics.com.kilargo.model.SubMenu;
 import kilargo_android.internetics.com.kilargo.util.FragmentUtils;
 
 /**
@@ -123,7 +109,7 @@ public class SearchResultFragment extends BaseFragment {
         getActivity().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
-        FragmentUtils.sDisableFragmentAnimations = true;
+        FragmentUtils.sDisableFragmentAnimations = true;  //don't allow animation
         getActivity().getSupportFragmentManager().popBackStackImmediate();
         FragmentUtils.sDisableFragmentAnimations = false;
     }
@@ -137,10 +123,11 @@ public class SearchResultFragment extends BaseFragment {
         ProductFragment newFragment = new ProductFragment();
         newFragment.setProductList(Arrays.asList(selectedProduct));
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.disallowAddToBackStack();
         transaction.setCustomAnimations(R.anim.fragment_slide_left_enter,
                 R.anim.fragment_slide_left_exit,
-                R.anim.fragment_slide_pop_enter,
-                R.anim.fragment_slide_pop_exit);
+                0,
+                0);
         transaction.replace(R.id.fragment_container, newFragment);
         transaction.commit();
 

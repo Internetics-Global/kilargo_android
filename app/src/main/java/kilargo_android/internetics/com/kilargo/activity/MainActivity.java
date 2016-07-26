@@ -1,11 +1,11 @@
 package kilargo_android.internetics.com.kilargo.activity;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
-import android.os.Bundle;
 import android.widget.FrameLayout;
 
 import com.github.pwittchen.networkevents.library.BusWrapper;
@@ -216,7 +216,7 @@ public class MainActivity extends BaseActivity implements android.support.v4.app
         Fragment newFragment = new SettingFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, newFragment);
-        transaction.addToBackStack("AboutFragment");
+        transaction.addToBackStack("SettingFragment" + System.currentTimeMillis());
         transaction.commit();
 
 
@@ -232,7 +232,7 @@ public class MainActivity extends BaseActivity implements android.support.v4.app
         Fragment newFragment = new AboutFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, newFragment);
-        transaction.addToBackStack("AboutFragment");
+        transaction.addToBackStack("AboutFragment" + System.currentTimeMillis());
         transaction.commit();
 
     }
@@ -240,7 +240,8 @@ public class MainActivity extends BaseActivity implements android.support.v4.app
     /*
      * 发现实际中,back stack会有问题,不知道是否是系统的bug,所以需要如下额外的逻辑进行处理.
      */
-    static int LAST_STACK_ENTRY_COUNT = -1;
+    static int     LAST_STACK_ENTRY_COUNT = -1;
+    static String  LAST_TOP_STACK_FRAGMENT_NAME = "";
     @Override
     public void onBackStackChanged() {
 
@@ -248,27 +249,53 @@ public class MainActivity extends BaseActivity implements android.support.v4.app
 
         FragmentManager fm = getSupportFragmentManager();
 
-        //由于onBackStackChanged 是在stack内容变化时被回调,而我们只是希望在back时才执行.
         if (LAST_STACK_ENTRY_COUNT <= fm.getBackStackEntryCount()) {
             LAST_STACK_ENTRY_COUNT =  fm.getBackStackEntryCount();
-//            return;
+
+            if (fm.getBackStackEntryCount() > 0) {
+                FragmentManager.BackStackEntry backEntry=fm.getBackStackEntryAt(fm.getBackStackEntryCount()-1);
+                String str=backEntry.getName();
+                LAST_TOP_STACK_FRAGMENT_NAME = str;
+            }
+
+            return;
+
         } else {
+
+            //由于onBackStackChanged 是在stack内容变化时被回调,而我们只是希望在back时才执行.
+
             LAST_STACK_ENTRY_COUNT =  fm.getBackStackEntryCount();
+
+
+            if (fm.getBackStackEntryCount() == 0) {
+                final Fragment mainFragment = new MainFragment();
+
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                if (LAST_TOP_STACK_FRAGMENT_NAME.contains("SearchResultFragment")) {
+                    //in this case, we don't want the animation of slide out, since we try to simulate modal effect
+                    transaction.setCustomAnimations(0,
+                            0,
+                            0,
+                            0);
+                } else {
+                }
+                transaction.replace(R.id.fragment_container, mainFragment);
+                transaction.commit();
+
+
+
+            } else {
+
+                FragmentManager.BackStackEntry backEntry=fm.getBackStackEntryAt(fm.getBackStackEntryCount()-1);
+                String str=backEntry.getName();
+
+                if (str.contains("SearchResultFragment")) {  //实际中,我们发现虽然我们已经disable add to stack,SearchResultFragment仍旧会出现
+                    fm.popBackStack();
+                }
+            }
+
         }
 
-        if (fm.getBackStackEntryCount() == 0) {
-            final Fragment mainFragment = new MainFragment();
-            fm.beginTransaction()
-                    .replace(R.id.fragment_container, mainFragment,"MainFragment").commit();
-        } else {
-
-//            FragmentManager.BackStackEntry backEntry=fm.getBackStackEntryAt(fm.getBackStackEntryCount()-1);
-//            String str=backEntry.getName();
-//
-//            if (str.equals("SearchResultFragment")) {
-//                fm.popBackStack();
-//            }
-        }
 
     }
 }

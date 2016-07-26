@@ -3,7 +3,6 @@ package kilargo_android.internetics.com.kilargo.widget;
 import android.content.Context;
 import android.support.v4.widget.DrawerLayout;
 import android.util.AttributeSet;
-import android.widget.FrameLayout;
 
 /**
  * Created by BourneWang on 22/04/2016.

@@ -1,23 +1,13 @@
 package kilargo_android.internetics.com.kilargo.util;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Iterables;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Queue;
-import java.util.Stack;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import kilargo_android.internetics.com.kilargo.model.Product;
 
 /**
  * Created by BourneWang on 22/04/2016.

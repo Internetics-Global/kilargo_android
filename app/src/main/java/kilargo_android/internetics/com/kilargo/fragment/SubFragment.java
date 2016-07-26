@@ -9,16 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
-import com.squareup.moshi.Json;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -97,7 +92,7 @@ public class SubFragment extends BaseFragment {
 
                 android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container, newFragment);
-                transaction.addToBackStack("SearchResultFragment");
+                transaction.addToBackStack("SearchResultFragment" + System.currentTimeMillis());
                 transaction.commit();
             }
         });
@@ -134,7 +129,7 @@ public class SubFragment extends BaseFragment {
                 R.anim.fragment_slide_pop_enter,
                 R.anim.fragment_slide_pop_exit);
         transaction.replace(R.id.fragment_container, newFragment);
-        transaction.addToBackStack("ProductFragment");
+        transaction.addToBackStack("ProductFragment" + System.currentTimeMillis());
         transaction.commit();
 
     }

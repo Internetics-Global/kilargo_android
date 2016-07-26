@@ -1,9 +1,6 @@
 package kilargo_android.internetics.com.kilargo.activity;
 
-import android.app.Activity;
 import android.support.v4.app.FragmentActivity;
-
-import com.blunderer.materialdesignlibrary.handlers.ActionBarHandler;
 
 import kilargo_android.internetics.com.kilargo.util.AppContext;
 

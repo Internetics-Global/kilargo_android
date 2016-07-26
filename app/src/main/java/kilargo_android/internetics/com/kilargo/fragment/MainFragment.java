@@ -1,14 +1,10 @@
 package kilargo_android.internetics.com.kilargo.fragment;
 
-import android.app.ProgressDialog;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
-import com.wang.avi.AVLoadingIndicatorView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -32,9 +26,7 @@ import kilargo_android.internetics.com.kilargo.R;
 import kilargo_android.internetics.com.kilargo.activity.MainActivity;
 import kilargo_android.internetics.com.kilargo.adapter.KKListAdapter;
 import kilargo_android.internetics.com.kilargo.model.JsonFetcher;
-import kilargo_android.internetics.com.kilargo.model.SubMenu;
 import kilargo_android.internetics.com.kilargo.util.Global;
-import kilargo_android.internetics.com.kilargo.util.UIHelper;
 import kilargo_android.internetics.com.kilargo.widget.AVLoadingIndicatorDialog;
 
 /**
@@ -95,11 +87,11 @@ public class MainFragment extends BaseFragment {
                 SearchResultFragment newFragment = new SearchResultFragment();
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.setCustomAnimations(R.anim.fragment_slide_bottom_enter,
-                         R.anim.fragment_slide_bottom_exit,
+                        R.anim.fragment_slide_bottom_exit,
                         R.anim.fragment_slide_pop_enter,
                         R.anim.fragment_slide_pop_exit);
                 transaction.replace(R.id.fragment_container, newFragment);
-                transaction.addToBackStack("SearchResultFragment");
+                transaction.addToBackStack("SearchResultFragment" + System.currentTimeMillis());
                 transaction.commit();
             }
         });
@@ -149,7 +141,7 @@ public class MainFragment extends BaseFragment {
                 R.anim.fragment_slide_pop_enter,
                 R.anim.fragment_slide_pop_exit);
         transaction.replace(R.id.fragment_container, newFragment);
-        transaction.addToBackStack("ProductFragment");
+        transaction.addToBackStack("ProductFragment" + System.currentTimeMillis());
         transaction.commit();
 
 
@@ -168,7 +160,8 @@ public class MainFragment extends BaseFragment {
                 R.anim.fragment_slide_pop_enter,
                 R.anim.fragment_slide_pop_exit);
         transaction.replace(R.id.fragment_container, newFragment);
-        transaction.addToBackStack("SubFragment");
+
+        transaction.addToBackStack("SubFragment" +System.currentTimeMillis());
         transaction.commit();
 
 

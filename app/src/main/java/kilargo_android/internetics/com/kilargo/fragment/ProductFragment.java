@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
@@ -14,18 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 
-import org.parceler.Parcels;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
@@ -33,9 +27,7 @@ import butterknife.ButterKnife;
 import kilargo_android.internetics.com.kilargo.R;
 import kilargo_android.internetics.com.kilargo.activity.CarouseActivity;
 import kilargo_android.internetics.com.kilargo.adapter.KKImageScrollAdapter;
-import kilargo_android.internetics.com.kilargo.model.JsonFetcher;
 import kilargo_android.internetics.com.kilargo.model.Product;
-import kilargo_android.internetics.com.kilargo.util.AppContext;
 
 /**
  * Created by BourneWang on 22/04/2016.
@@ -103,7 +95,8 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
 
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container, newFragment);
-                transaction.addToBackStack("SearchResultFragment");
+
+                transaction.addToBackStack("SearchResultFragment" + System.currentTimeMillis());
                 transaction.commit();
             }
         });
