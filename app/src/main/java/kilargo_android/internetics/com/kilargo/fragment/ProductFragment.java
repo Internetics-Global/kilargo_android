@@ -36,7 +36,8 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
 
     @Bind(R.id.search_textview)               TextView mSearchView;
     @Bind(R.id.viewpager)                     ViewPager mViewPager;
-    @Bind(R.id.product_info_button)           Button    mProductInfoButton;
+    @Bind(R.id.product_info_button)           Button     mProductInfoButton;
+    @Bind(R.id.product_name_textview)         TextView    mProductNameTextView;
 
     @Bind(R.id.product_info_board_textview)   TextView  mProductInfoBoardTextView;
     @Bind(R.id.product_info_board_title_textview)   TextView  mProductInfoBoardTitleTextView;
@@ -72,6 +73,7 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
         return  view;
 
     }
+
 
 
     private void setupView(View baseView) {
@@ -129,6 +131,11 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
                 backButtonClicked();
             }
         });
+
+        if (mProductList != null && mProductList.size()>0) {
+            mProductNameTextView.setText(mProductList.get(0).mProductName);
+        }
+
 
 
     }
@@ -211,7 +218,11 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
         mCurrentPage = position;
+
+        this.mProductNameTextView.setText(mProductList.get(position).mProductName);
+
         updatePagerArrowsVisiblity(position);
+
 
     }
 

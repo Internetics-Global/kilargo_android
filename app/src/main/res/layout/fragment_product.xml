@@ -46,6 +46,16 @@
             android:background="@drawable/info"
             android:id="@+id/product_info_button"/>
 
+        <TextView
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="test again test again"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:id="@+id/product_name_textview"/>
+
         <ImageView
             android:layout_marginLeft="5dp"
             android:layout_width="10dp"
