@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="56dp">
+
+    <TextView android:id="@+id/category_textview"
+              android:layout_marginTop="3dp"
+              android:textSize="14sp"
+              android:text="Category name"
+              android:layout_width="match_parent"
+              android:layout_height="25dp"
+              android:layout_marginRight="15dp"
+              android:focusable="false"
+              android:focusableInTouchMode="false"
+              android:clickable="false"
+              android:maxLines="1"
+              android:singleLine="true"
+              android:ellipsize="start"
+              android:textColor="@android:color/darker_gray"
+              android:gravity="left|center_vertical"
+              android:background="@android:color/transparent">
+    </TextView>
+
+    <TextView android:id="@+id/product_name_textview"
+              android:textSize="14sp"
+              android:text="Product name"
+              android:layout_width="match_parent"
+              android:layout_height="25dp"
+              android:layout_marginRight="15dp"
+              android:layout_marginTop="28dp"
+              android:focusable="false"
+              android:focusableInTouchMode="false"
+              android:clickable="false"
+              android:maxLines="1"
+              android:singleLine="true"
+              android:ellipsize="start"
+              android:textColor="@android:color/black"
+              android:gravity="left|center_vertical"
+              android:background="@android:color/transparent">
+    </TextView>
+
+    <ImageView
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="23dp"
+        android:gravity = "center"
+        android:scaleType="fitCenter"
+        android:layout_width="7dp"
+        android:layout_height="10dp"
+        android:src="@drawable/right_indicator"
+        android:layout_alignParentRight="true"/>
+
+</RelativeLayout>

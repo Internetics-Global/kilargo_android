@@ -53,21 +53,24 @@ public class SearchAdapter extends BaseAdapter {
         if (view != null) {
             holder = (ViewHolder) view.getTag();
         } else {
-            view = LayoutInflater.from(mContext).inflate(R.layout.menu_item, viewGroup, false);
+            view = LayoutInflater.from(mContext).inflate(R.layout.search_result_item, viewGroup, false);
             holder = new ViewHolder(view);
             view.setTag(holder);
         }
 
         Product product = mDataArrayList.get(i);
 
-        holder.titleTextView.setText(product.mCategory + " -> " + product.mSubcategory + " -> " + product.mProductName);
+        holder.categoryNameTextView.setText(product.mCategory + " -> " + product.mSubcategory);
+        holder.productNameTextView.setText(product.mProductName);
+
 
         return view;
     }
 
 
     static class ViewHolder {
-        @Bind(R.id.title_textview) TextView titleTextView;
+        @Bind(R.id.category_textview) TextView categoryNameTextView;
+        @Bind(R.id.product_name_textview) TextView productNameTextView;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);
