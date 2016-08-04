@@ -89,7 +89,7 @@ public class SearchResultFragment extends BaseFragment {
             @Override
             public boolean onQueryTextChange(String s) {
 
-                mSearchResults = JsonFetcher.sharedFetcher().getProductsWithProductName(s);
+                mSearchResults = JsonFetcher.sharedFetcher().getProductsWithAnyKeyword(s);
 
                 mAdapter.setDataArrayList(mSearchResults);
                 mAdapter.notifyDataSetInvalidated();

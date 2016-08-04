@@ -156,6 +156,38 @@ public class JsonFetcher {
 
     }
 
+    /*
+     * support product name, category, subcategory name
+     */
+    public List<Product> getProductsWithAnyKeyword(final String name) {
+
+        ArrayList<Product> products = new ArrayList();
+
+        if (Strings.isNullOrEmpty(name)) {
+            return products;
+        }
+
+        Iterable<Product> iterableProducts = Iterables.filter(mProducts, new Predicate<Product>() {
+            @Override
+            public boolean apply(Product input) {
+                if (input.mProductName.toLowerCase().contains( name.toLowerCase()) ||
+                        input.mCategory.toLowerCase().contains( name.toLowerCase()) ||
+                        input.mSubcategory.toLowerCase().contains( name.toLowerCase())) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+
+        products = Lists.newArrayList(iterableProducts);
+
+        return products;
+
+
+
+    }
+
 
     public List<Product> getProductsWithProductName(final String productName) {
 
