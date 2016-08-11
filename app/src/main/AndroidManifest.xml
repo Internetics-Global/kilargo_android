@@ -15,6 +15,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.SplashActivity"
+            android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="adjustUnspecified">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -24,8 +25,14 @@
         </activity>
 
         <activity android:name=".activity.MainActivity"
+                  android:screenOrientation="sensorPortrait"
+                  android:configChanges="orientation|keyboardHidden|screenSize"
             ></activity>
-        <activity android:name=".activity.CarouseActivity"></activity>
+        <activity android:name=".activity.CarouseActivity"
+                  android:screenOrientation="sensorPortrait"
+                  android:configChanges="orientation|keyboardHidden|screenSize">
+
+        </activity>
     </application>
 
 </manifest>
