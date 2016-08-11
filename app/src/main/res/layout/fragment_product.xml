@@ -85,7 +85,9 @@
                 android:id="@+id/product_info_board"
                 android:layout_gravity="bottom|center_horizontal"
                 android:background="@drawable/rounded_product_info_bg"
-                android:layout_width="300dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_width="match_parent"
                 android:layout_height="200dp">
 
                 <TextView
@@ -95,6 +97,7 @@
                     android:textSize="14sp"
                     android:id="@+id/product_info_board_title_textview"
                     android:text="title"
+                    android:textColor="@android:color/black"
                     android:textAlignment="center"
                     android:layout_width="match_parent"
                     android:layout_height="25dp"/>
@@ -106,17 +109,21 @@
                     android:textSize="14sp"
                     android:id="@+id/product_info_board_textview"
                     android:text="message"
+                    android:maxLines="1000"
+                    android:scrollbars="vertical"
+                    android:textColor="@android:color/black"
                     android:textAlignment="center"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"/>
+                    android:layout_height="115dp"/>
 
                 <TextView
-                    android:layout_marginTop="165dp"
+                    android:layout_marginTop="170dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginBottom="10dp"
                     android:textSize="14sp"
                     android:id="@+id/product_info_board_appendix_textview"
                     android:text="appendix"
+                    android:textColor="@android:color/black"
                     android:textAlignment="center"
                     android:layout_width="match_parent"
                     android:layout_height="25dp"/>

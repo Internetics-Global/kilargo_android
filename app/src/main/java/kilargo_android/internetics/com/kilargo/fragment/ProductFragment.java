@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -136,7 +137,8 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
             mProductNameTextView.setText(mProductList.get(0).mProductName);
         }
 
-
+        //make TextView scrollable: http://stackoverflow.com/questions/13673067/textview-scrolling-not-working
+        mProductInfoBoardTextView.setMovementMethod(new ScrollingMovementMethod());
 
     }
 
@@ -147,9 +149,6 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
     }
 
     private void viewPagerItemClicked(int position) {
-
-//        switchNotesViewVisibility();
-//        updateProductBoardContent();
 
         Intent intent = CarouseActivity.buildIntent(getActivity(),mProductList.get(position));
 
@@ -258,7 +257,7 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
 
     private void switchNotesViewVisibility() {
 
-        final float alphaVal = 0.9f;
+        final float alphaVal = 0.95f;
 
         if (mProductInfoBoard.getAlpha() > 0) {
             mProductInfoBgMask.setVisibility(View.INVISIBLE);
@@ -292,6 +291,7 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
 
     private void updateProductBoardContent() {
         mProductInfoBoardTextView.setText(mProductList.get(mCurrentPage).mNotes);
+//        mProductInfoBoardTextView.setText("You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.");
         mProductInfoBoardTitleTextView.setText(mProductList.get(mCurrentPage).mProductName);
         mProductInfoBoardAppendixTextView.setText(mProductList.get(mCurrentPage).mBuildingElement);
     }
