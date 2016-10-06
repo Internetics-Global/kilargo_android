@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
@@ -28,8 +29,8 @@ import kilargo_android.internetics.com.kilargo.model.Product;
  */
 public class SubFragment extends BaseFragment {
 
-    @Bind(R.id.search_textview)       TextView mSearchView;
-    @Bind(R.id.listview)   ListView   mListView;
+    @Bind(R.id.search_view)  SearchView mSearchView;
+    @Bind(R.id.listview)     ListView   mListView;
     @Bind(R.id.back_textview)TextView mBackTextView;
 
     private KKListAdapter mAdapter;
@@ -61,7 +62,7 @@ public class SubFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
 
-        mSearchView.clearFocus();
+//        mSearchView.clearFocus();
         getActivity().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
@@ -84,18 +85,18 @@ public class SubFragment extends BaseFragment {
         mAdapter.notifyDataSetInvalidated();
 
 
-        mSearchView.setFocusable(false);
-        mSearchView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SearchResultFragment newFragment = new SearchResultFragment();
-
-                android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, newFragment);
-                transaction.addToBackStack("SearchResultFragment" + System.currentTimeMillis());
-                transaction.commit();
-            }
-        });
+//        mSearchView.setFocusable(false);
+//        mSearchView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                SearchResultFragment newFragment = new SearchResultFragment();
+//
+//                android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+//                transaction.replace(R.id.fragment_container, newFragment);
+//                transaction.addToBackStack("SearchResultFragment" + System.currentTimeMillis());
+//                transaction.commit();
+//            }
+//        });
 
 
         mBackTextView.setVisibility(View.VISIBLE);

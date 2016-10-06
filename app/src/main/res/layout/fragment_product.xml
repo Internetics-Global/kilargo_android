@@ -11,14 +11,6 @@
 
     <include layout="@layout/header_view"/>
 
-    <ImageView
-        android:layout_width="195dp"
-        android:layout_height="67dp"
-        android:layout_marginTop="10dp"
-        android:id="@+id/banner"
-        android:src="@mipmap/logo"
-        android:layout_gravity="center_horizontal"/>
-
     <include layout="@layout/search_bar"/>
 
     <FrameLayout
@@ -27,50 +19,72 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="left"
+            android:gravity="center"
+            android:background="@drawable/rounded_product_info_bg"
+            android:layout_width="130dp"
+            android:layout_height="32dp"
+            android:text="Information"
+            android:drawableLeft="@drawable/info_icon"
+            android:id="@+id/product_info_textview"/>
+
+        <TextView
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="right"
+            android:gravity="center"
+            android:background="@drawable/rounded_installation_info_bg"
+            android:layout_width="130dp"
+            android:layout_height="32dp"
+            android:text="Installation"
+            android:drawableLeft="@drawable/installation_icon"
+            android:id="@+id/product_installation_textview"/>
+
+
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="60dp"
+            android:gravity="left"
+            android:textStyle="bold|italic"
+            android:text="test again test again"
+            android:textSize="22sp"
+            android:textColor="@android:color/black"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:id="@+id/product_name_textview"/>
+
         <android.support.v4.view.ViewPager
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="84dp"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/viewpager">
         </android.support.v4.view.ViewPager>
 
-        <Button
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:gravity="left|top"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:background="@drawable/info"
-            android:id="@+id/product_info_button"/>
 
-        <TextView
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="60dp"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="test again test again"
-            android:layout_width="match_parent"
-            android:layout_height="24dp"
-            android:id="@+id/product_name_textview"/>
 
         <ImageView
             android:layout_marginLeft="5dp"
-            android:layout_width="10dp"
+            android:layout_width="20dp"
             android:layout_height="20dp"
             android:id="@+id/pager_left_arrow"
             android:layout_gravity="left|center_vertical"
-            android:background="@drawable/left_arrow"/>
+            android:background="@drawable/left_indicator"/>
 
         <ImageView
             android:layout_marginRight="5dp"
-            android:layout_width="10dp"
+            android:layout_width="20dp"
             android:layout_height="20dp"
             android:id="@+id/pager_right_arrow"
             android:layout_gravity="right|center_vertical"
-            android:background="@drawable/right_arrow"/>
+            android:background="@drawable/right_indicator"/>
 
 
         <FrameLayout
@@ -80,69 +94,21 @@
             android:visibility="invisible"
             android:id="@+id/product_info_bg_mask">
 
-            <RelativeLayout
+            <ScrollView
                 android:alpha="0"
-                android:id="@+id/product_info_board"
+                android:id="@+id/product_info_scrollview"
                 android:layout_gravity="bottom|center_horizontal"
-                android:background="@drawable/rounded_product_info_bg"
+                android:background="@drawable/info_dialog_bg"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_width="match_parent"
-                android:layout_height="200dp">
+                android:paddingTop="20dp"
+                android:paddingBottom="10dp"
+                android:layout_height="200dp"></ScrollView>
 
-                <TextView
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="25dp"
-                    android:layout_marginRight="25dp"
-                    android:textSize="14sp"
-                    android:id="@+id/product_info_board_title_textview"
-                    android:text="title"
-                    android:textColor="@android:color/black"
-                    android:textAlignment="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"/>
 
-                <TextView
-                    android:layout_marginTop="45dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:textSize="14sp"
-                    android:id="@+id/product_info_board_textview"
-                    android:text="message"
-                    android:maxLines="1000"
-                    android:scrollbars="vertical"
-                    android:textColor="@android:color/black"
-                    android:textAlignment="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="115dp"/>
-
-                <TextView
-                    android:layout_marginTop="170dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:textSize="14sp"
-                    android:id="@+id/product_info_board_appendix_textview"
-                    android:text="appendix"
-                    android:textColor="@android:color/black"
-                    android:textAlignment="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="25dp"/>
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/info"/>
-
-            </RelativeLayout>
 
         </FrameLayout>
-
-
-
 
 
     </FrameLayout>

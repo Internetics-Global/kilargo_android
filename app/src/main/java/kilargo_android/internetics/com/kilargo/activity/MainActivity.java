@@ -237,6 +237,12 @@ public class MainActivity extends BaseActivity implements android.support.v4.app
 
     }
 
+
+    public void productsButtonClicked() {
+
+        closeDrawer();
+    }
+
     /*
      * 发现实际中,back stack会有问题,不知道是否是系统的bug,所以需要如下额外的逻辑进行处理.
      */
@@ -298,4 +304,6 @@ public class MainActivity extends BaseActivity implements android.support.v4.app
 
 
     }
+
+
 }

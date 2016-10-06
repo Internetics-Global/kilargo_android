@@ -8,18 +8,11 @@
     android:layout_width="match_parent"
     android:layout_height="44dp"
     android:background="@drawable/rounded_searchview_bg"
-    tools:showIn="@layout/header_view">
+    >
 
-    <TextView
-        android:layout_margin="5dp"
+    <SearchView
+        android:id="@+id/search_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/search_textview"/>
-
-    <ImageView
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/search"
-        android:layout_gravity="center"/>
+        android:layout_height="match_parent"></SearchView>
 
 </FrameLayout>

@@ -11,14 +11,6 @@
 
     <include layout="@layout/header_view"/>
 
-    <ImageView
-        android:layout_width="195dp"
-        android:layout_height="67dp"
-        android:layout_marginTop="10dp"
-        android:id="@+id/banner"
-        android:src="@mipmap/logo"
-        android:layout_gravity="center_horizontal"/>
-
     <include layout="@layout/search_bar"/>
 
     <ListView

@@ -3,10 +3,10 @@ package kilargo_android.internetics.com.kilargo.fragment;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
@@ -16,6 +16,9 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
@@ -29,21 +32,21 @@ import kilargo_android.internetics.com.kilargo.R;
 import kilargo_android.internetics.com.kilargo.activity.CarouseActivity;
 import kilargo_android.internetics.com.kilargo.adapter.KKImageScrollAdapter;
 import kilargo_android.internetics.com.kilargo.model.Product;
+import kilargo_android.internetics.com.kilargo.util.UIHelper;
 
 /**
  * Created by BourneWang on 22/04/2016.
  */
 public class ProductFragment extends BaseFragment implements ViewPager.OnPageChangeListener {
 
-    @Bind(R.id.search_textview)               TextView mSearchView;
+    @Bind(R.id.search_view)                  SearchView mSearchView;
     @Bind(R.id.viewpager)                     ViewPager mViewPager;
-    @Bind(R.id.product_info_button)           Button     mProductInfoButton;
+    @Bind(R.id.product_info_textview)         TextView     mProductInfoTextView;
+    @Bind(R.id.product_installation_textview) TextView     mProductInstallationTextView;
+
     @Bind(R.id.product_name_textview)         TextView    mProductNameTextView;
 
-    @Bind(R.id.product_info_board_textview)   TextView  mProductInfoBoardTextView;
-    @Bind(R.id.product_info_board_title_textview)   TextView  mProductInfoBoardTitleTextView;
-    @Bind(R.id.product_info_board_appendix_textview)   TextView  mProductInfoBoardAppendixTextView;
-    @Bind(R.id.product_info_board)            ViewGroup  mProductInfoBoard;
+    @Bind(R.id.product_info_scrollview)       ScrollView  mProductInfoScrollView;
     @Bind(R.id.product_info_bg_mask)          ViewGroup  mProductInfoBgMask;
 
     @Bind(R.id.back_textview)                   TextView mBackTextView;
@@ -90,33 +93,42 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
         });
         refresh();
 
-        mSearchView.setFocusable(false);
-        mSearchView.setOnClickListener(new View.OnClickListener() {
+//        mSearchView.setFocusable(false);
+//        mSearchView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                SearchResultFragment newFragment = new SearchResultFragment();
+//
+//                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+//                transaction.replace(R.id.fragment_container, newFragment);
+//
+//                transaction.addToBackStack("SearchResultFragment" + System.currentTimeMillis());
+//                transaction.commit();
+//            }
+//        });
+
+
+        mProductInfoTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SearchResultFragment newFragment = new SearchResultFragment();
+                switchProductContentVisibility();
+                updateProductInfoContent();
+            }
+        });
 
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, newFragment);
-
-                transaction.addToBackStack("SearchResultFragment" + System.currentTimeMillis());
-                transaction.commit();
+        mProductInstallationTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchProductContentVisibility();
+                updateProductInstallationContent();
             }
         });
 
 
-        mProductInfoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchNotesViewVisibility();
-                updateProductBoardContent();
-            }
-        });
         mProductInfoBgMask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switchNotesViewVisibility();
-                updateProductBoardContent();
+                hideProductContentView();
             }
         });
 
@@ -136,9 +148,6 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
         if (mProductList != null && mProductList.size()>0) {
             mProductNameTextView.setText(mProductList.get(0).mProductName);
         }
-
-        //make TextView scrollable: http://stackoverflow.com/questions/13673067/textview-scrolling-not-working
-        mProductInfoBoardTextView.setMovementMethod(new ScrollingMovementMethod());
 
     }
 
@@ -177,7 +186,7 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
 
         Logger.d("onPause");
 
-        mSearchView.clearFocus();
+//        mSearchView.clearFocus();
         getActivity().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
@@ -255,13 +264,14 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
 
     }
 
-    private void switchNotesViewVisibility() {
+
+    private void switchProductContentVisibility() {
 
         final float alphaVal = 0.95f;
 
-        if (mProductInfoBoard.getAlpha() > 0) {
+        if (mProductInfoScrollView.getAlpha() > 0) {
             mProductInfoBgMask.setVisibility(View.INVISIBLE);
-            mProductInfoBoard.animate()
+            mProductInfoScrollView.animate()
                     .alpha(0)
                     .setDuration(400)
                     .setInterpolator(new AccelerateDecelerateInterpolator())
@@ -269,12 +279,12 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
-                            mProductInfoBoard.setAlpha(0);
+                            mProductInfoScrollView.setAlpha(0);
                         }
                     });
         } else {
             mProductInfoBgMask.setVisibility(View.VISIBLE);
-            mProductInfoBoard.animate()
+            mProductInfoScrollView.animate()
                     .alpha(alphaVal)
                     .setDuration(400)
                     .setInterpolator(new AccelerateDecelerateInterpolator())
@@ -282,18 +292,103 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
-                            mProductInfoBoard.setAlpha(alphaVal);
+                            mProductInfoScrollView.setAlpha(alphaVal);
                         }
                     });
         }
 
     }
 
-    private void updateProductBoardContent() {
-        mProductInfoBoardTextView.setText(mProductList.get(mCurrentPage).mNotes);
-//        mProductInfoBoardTextView.setText("You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.You don't need to use a ScrollView actually.");
-        mProductInfoBoardTitleTextView.setText(mProductList.get(mCurrentPage).mProductName);
-        mProductInfoBoardAppendixTextView.setText(mProductList.get(mCurrentPage).mBuildingElement);
+    private void hideProductContentView() {
+        if (mProductInfoScrollView.getAlpha() > 0) {
+            mProductInfoBgMask.setVisibility(View.INVISIBLE);
+            mProductInfoScrollView.animate()
+                    .alpha(0)
+                    .setDuration(400)
+                    .setInterpolator(new AccelerateDecelerateInterpolator())
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            mProductInfoScrollView.setAlpha(0);
+                        }
+                    });
+        }
+    }
+
+    private void updateProductInstallationContent() {
+
+        Product product = mProductList.get(mCurrentPage);
+
+        mProductInfoScrollView.removeAllViews();
+
+        LinearLayout ll = new LinearLayout(getActivity());
+        LinearLayout.LayoutParams layoutParams =new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        ll.setLayoutParams(layoutParams);
+        ll.setOrientation(LinearLayout.VERTICAL);
+        mProductInfoScrollView.addView(ll);
+
+        View item = LayoutInflater.from(getActivity()).inflate(R.layout.product_info_dialog_item, null);
+        TextView summaryTextView = (TextView) item.findViewById(R.id.summary_textview);
+        TextView detailTextView = (TextView) item.findViewById(R.id.detail_textview);
+
+        summaryTextView.setText(product.installationInstructionTitle);
+        detailTextView.setText(product.installationInstructionBody);
+
+        ll.addView(item);
+
+    }
+
+    private void updateProductInfoContent() {
+
+        Product product = mProductList.get(mCurrentPage);
+
+        mProductInfoScrollView.removeAllViews();
+
+        LinearLayout ll = new LinearLayout(getActivity());
+        LinearLayout.LayoutParams layoutParams =new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        ll.setLayoutParams(layoutParams);
+        ll.setOrientation(LinearLayout.VERTICAL);
+        mProductInfoScrollView.addView(ll);
+
+        for(int i = 0; i < 3; i++)
+        {
+            View item = LayoutInflater.from(getActivity()).inflate(R.layout.product_info_dialog_item, null);
+            TextView summaryTextView = (TextView) item.findViewById(R.id.summary_textview);
+            TextView detailTextView = (TextView) item.findViewById(R.id.detail_textview);
+
+            switch (i) {
+                case 0: {
+                    summaryTextView.setText("Building Element");
+                    detailTextView.setText(product.mBuildingElement);
+                    break;
+                }
+                case 1: {
+                    summaryTextView.setText("Application");
+                    detailTextView.setText(product.mApplication);
+                    break;
+                }
+                case 2: {
+                    summaryTextView.setText("Maximum size shitttttttttterwerwerwerwerwerewrwerewrewrwerewrweerew");
+                    detailTextView.setText(product.mMaxSize);
+                    break;
+                }
+            }
+
+            ll.addView(item);
+
+            if (i < 2) {
+                int dp5 = (int) UIHelper.convertDpToPixel(5);
+                View separator = new View(getActivity());
+                layoutParams =new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
+                layoutParams.setMargins(dp5 *2,dp5,dp5,dp5 *2);
+                separator.setBackgroundColor(Color.DKGRAY);
+                separator.setLayoutParams(layoutParams);
+                ll.addView(separator);
+            }
+        }
+
+
     }
 
 

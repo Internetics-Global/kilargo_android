@@ -19,10 +19,11 @@ import kilargo_android.internetics.com.kilargo.activity.MainActivity;
 
 public class MoreFragment extends BaseFragment {
 
-    @Bind(R.id.avatar_image)                   ImageView       mClerkAvatarImageView;
-    @Bind(R.id.button_setting_setting)                   Button       mSettingButton;
-    @Bind(R.id.button_setting_about)                   Button       mAboutButton;
-    @Bind(R.id.version_info)                   TextView       mVersionTextView;
+    @Bind(R.id.button_setting_products)                  Button         mProductsButton;
+    @Bind(R.id.button_setting_setting)                   Button         mSettingButton;
+    @Bind(R.id.button_setting_about)                     Button         mAboutButton;
+    @Bind(R.id.version_info)                             TextView       mVersionTextView;
+    @Bind(R.id.back_textview)                            TextView       mNaviBarBackTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,20 +39,19 @@ public class MoreFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_more, null);
         ButterKnife.bind(this,view);
 
-
-        mClerkAvatarImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                clerkButtonClicked(v);
-
-            }
-        });
-
         mSettingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((MainActivity)getActivity()).settingButtonClicked();
+
+            }
+        });
+
+
+        mProductsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).productsButtonClicked();
 
             }
         });
@@ -64,6 +64,8 @@ public class MoreFragment extends BaseFragment {
 
             }
         });
+
+        mNaviBarBackTextView.setVisibility(View.INVISIBLE);
 
 
         refreshContentViews();
@@ -93,9 +95,6 @@ public class MoreFragment extends BaseFragment {
 
     }
 
-    private void clerkButtonClicked(View v) {
-
-    }
 
     public void refreshContentViews() {
 

@@ -2,25 +2,21 @@
     android:background="@android:color/white"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/avatar_image"
-        android:layout_marginTop="60dp"
-        android:layout_marginBottom="10dp"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/icon"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="20dp"
-        app:border_width="1dp"
-        app:border_color="@android:color/darker_gray"/>
+    <include
+        layout="@layout/header_view"
+        android:id="@+id/header_view"
+        android:layout_width="match_parent"
+        android:layout_height="133dp"
+        android:layout_alignParentTop="true"/>
+
 
     <ScrollView
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/avatar_image"
-        android:background="#2E3142"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="133dp"
+        android:background="@drawable/left_view_bottom_background"
         android:scrollbars="none">
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,10 +25,32 @@
             android:padding="5dp">
 
             <Button
+                android:id="@+id/button_setting_products"
+                style="@style/button_setting_list_item"
+                android:text="Products"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="12dp"
+                android:background="@android:color/darker_gray"
+                ></View>
+
+
+            <Button
                 android:id="@+id/button_setting_setting"
                 style="@style/button_setting_list_item"
                 android:text="Settings"
                 />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="12dp"
+                android:background="@android:color/darker_gray"
+                ></View>
+
             <Button
                 android:id="@+id/button_setting_about"
                 style="@style/button_setting_list_item"
@@ -41,16 +59,18 @@
         </LinearLayout>
     </ScrollView>
 
+
+
     <TextView
-        android:layout_below="@id/scrollview"
         android:id="@+id/version_info"
         android:gravity="center"
         android:textSize="10sp"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/holo_orange_dark"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="version"
-        android:layout_marginTop="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
         />
 
 </RelativeLayout>

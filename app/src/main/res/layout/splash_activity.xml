@@ -5,9 +5,9 @@
                 android:layout_height="match_parent">
 
     <ImageView
-        android:layout_width="195dp"
-        android:layout_height="195dp"
-        android:src="@mipmap/logo"
+        android:layout_width="280dp"
+        android:layout_height="97dp"
+        android:src="@drawable/splash_logo"
         android:adjustViewBounds="true"
         android:layout_centerInParent="true"
         android:scaleType="fitCenter"/>

@@ -7,13 +7,23 @@
 
     <include layout="@layout/header_view"/>
 
-    <TextView
-        android:id="@+id/summary"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textStyle="bold"
-        android:text="About"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_gravity="top|center"
+                android:src="@drawable/about_content"
+                android:layout_width="@dimen/about_content_width"
+                android:layout_height="@dimen/about_content_height"/>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

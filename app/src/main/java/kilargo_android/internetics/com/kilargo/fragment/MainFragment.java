@@ -13,10 +13,15 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
+import com.shehabic.droppy.DroppyClickCallbackInterface;
+import com.shehabic.droppy.DroppyMenuItem;
+import com.shehabic.droppy.DroppyMenuPopup;
 
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
@@ -26,6 +31,7 @@ import kilargo_android.internetics.com.kilargo.R;
 import kilargo_android.internetics.com.kilargo.activity.MainActivity;
 import kilargo_android.internetics.com.kilargo.adapter.KKListAdapter;
 import kilargo_android.internetics.com.kilargo.model.JsonFetcher;
+import kilargo_android.internetics.com.kilargo.model.Product;
 import kilargo_android.internetics.com.kilargo.util.Global;
 import kilargo_android.internetics.com.kilargo.widget.AVLoadingIndicatorDialog;
 
@@ -34,7 +40,7 @@ import kilargo_android.internetics.com.kilargo.widget.AVLoadingIndicatorDialog;
  */
 public class MainFragment extends BaseFragment {
 
-    @Bind(R.id.search_textview)     TextView   mSearchView;
+    @Bind(R.id.search_view)         SearchView mSearchView;
     @Bind(R.id.listview)            ListView   mListView;
     @Bind(R.id.refresh_button)      Button     mRefreshButton;
     @Bind(R.id.swipe_refresh_layout)SwipeRefreshLayout  mSwipeRefreshLayout;
@@ -80,21 +86,7 @@ public class MainFragment extends BaseFragment {
         });
         refreshList();
 
-        mSearchView.setFocusable(false);
-        mSearchView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SearchResultFragment newFragment = new SearchResultFragment();
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.setCustomAnimations(R.anim.fragment_slide_bottom_enter,
-                        R.anim.fragment_slide_bottom_exit,
-                        R.anim.fragment_slide_pop_enter,
-                        R.anim.fragment_slide_pop_exit);
-                transaction.replace(R.id.fragment_container, newFragment);
-                transaction.addToBackStack("SearchResultFragment" + System.currentTimeMillis());
-                transaction.commit();
-            }
-        });
+        setupSearch();
 
         mRefreshButton.setVisibility(View.VISIBLE);
         mRefreshButton.setOnClickListener(new View.OnClickListener() {
@@ -124,6 +116,78 @@ public class MainFragment extends BaseFragment {
         });
 
 
+    }
+
+
+    private List<Product> searchResult;
+    private void setupSearch() {
+
+        final DroppyMenuPopup.Builder droppyBuilder = new DroppyMenuPopup.Builder(getActivity(), mSearchView);
+
+        droppyBuilder.setOnClick(new DroppyClickCallbackInterface() {
+            @Override
+            public void call(View v, int id) {
+
+                mSearchView.clearFocus();
+
+                Product selectedProduct = searchResult.get(id);
+
+                ProductFragment newFragment = new ProductFragment();
+                newFragment.setProductList(Arrays.asList(selectedProduct));
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(R.anim.fragment_slide_left_enter,
+                        R.anim.fragment_slide_left_exit,
+                        0,
+                        0);
+                transaction.replace(R.id.fragment_container, newFragment);
+                transaction.addToBackStack("ProductFragment" +System.currentTimeMillis());
+                transaction.commit();
+
+            }
+        });
+
+        final DroppyMenuPopup droppyMenu = droppyBuilder.build();
+
+        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                droppyMenu.dismiss(false);
+                return false;
+            }
+        });
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+
+                searchResult = JsonFetcher.sharedFetcher().getProductsWithAnyKeyword(s);
+                if (searchResult.size() >0) {
+
+
+                    int index = 0;
+                    for (Product item : searchResult) {
+
+                        if (index == searchResult.size() - 1) {
+                            droppyBuilder.addMenuItem(new DroppyMenuItem(item.mProductName));
+                        } else {
+                            droppyBuilder.addMenuItem(new DroppyMenuItem(item.mProductName))
+                                    .addSeparator();
+                        }
+
+                    }
+
+                    droppyMenu.show();
+                } else {
+//                    droppyMenu.hideAnimationCompleted(false);
+                }
+
+                return false;
+            }
+        });
     }
 
     private void refreshButtonClicked() {
@@ -183,7 +247,7 @@ public class MainFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
 
-        mSearchView.clearFocus();
+//        mSearchView.clearFocus();
         getActivity().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );

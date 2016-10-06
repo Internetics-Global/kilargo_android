@@ -3,34 +3,30 @@ package kilargo_android.internetics.com.kilargo.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.google.common.base.Strings;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import kilargo_android.internetics.com.kilargo.R;
 import kilargo_android.internetics.com.kilargo.model.Product;
 import kilargo_android.internetics.com.kilargo.util.Global;
-import kilargo_android.internetics.com.kilargo.util.UIHelper;
+import kilargo_android.internetics.com.kilargo.widget.HackyViewPager;
+import uk.co.senab.photoview.PhotoView;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by BourneWang on 5/05/2016.
  */
 public class CarouseActivity extends BaseActivity {
-
-    @Bind(R.id.carousel_layout)  ViewGroup            mBaseLayout;
-    @Bind(R.id.scrollview)       HorizontalScrollView mHorizontalScrollViewl;
-    @Bind(R.id.ll)               LinearLayout         mScrollViewContentView;
 
     private ArrayList<String> mValidImages = new ArrayList<>();
 
@@ -44,11 +40,11 @@ public class CarouseActivity extends BaseActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_carouse);
-        ButterKnife.bind(this);
+        ViewPager mViewPager = (HackyViewPager) findViewById(R.id.view_pager);
+        setContentView(mViewPager);
 
         Product product = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_PARCEL));
         if (Strings.isNullOrEmpty(product.mImage1) == false) {
@@ -70,53 +66,50 @@ public class CarouseActivity extends BaseActivity {
             mValidImages.add(product.productImage);
         }
 
-        mBaseLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();
-            }
-        });
-
-        setupHorizontalScrollView();
-
-
+        mViewPager.setAdapter(new SamplePagerAdapter());
     }
 
-    private void setupHorizontalScrollView() {
+    class SamplePagerAdapter extends PagerAdapter {
 
-        for (String item : mValidImages) {
-
-            int margin = (int) UIHelper.convertDpToPixel(10);
-            int width = UIHelper.getScreenWidth(CarouseActivity.this) - (int) UIHelper.convertDpToPixel(40);
-
-            ImageView imageView = new ImageView(this);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, ViewGroup.LayoutParams.MATCH_PARENT);
-            params.leftMargin = margin;
-            params.rightMargin = margin;
-            imageView.setLayoutParams(params);
-            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dismiss();
-                }
-            });
-
-            String url = Global.imageBaseURL + item;
-            Picasso.with(this)
-                    .load(url)
-                    .fit().centerInside()
-                    .placeholder(R.drawable.placeholder)
-                    .into(imageView);
-
-            mScrollViewContentView.addView(imageView);
-
+        @Override
+        public int getCount() {
+            return mValidImages.size();
         }
 
+        @Override
+        public View instantiateItem(ViewGroup container, int position) {
+            PhotoView photoView = new PhotoView(container.getContext());
+            final PhotoViewAttacher attacher = new PhotoViewAttacher(photoView);
+            String url = Global.imageBaseURL + mValidImages.get(position);
 
-    }
+            Picasso.with(CarouseActivity.this)
+                    .load(url)
+                    .into(photoView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            attacher.update();
+                        }
 
-    private void dismiss() {
-        this.finish();
+                        @Override
+                        public void onError() {
+                        }
+                    });
+
+            // Now just add PhotoView to ViewPager and return it
+            container.addView(photoView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+            return photoView;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView((View) object);
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
+
     }
 }
