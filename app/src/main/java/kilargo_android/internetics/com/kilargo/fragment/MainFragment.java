@@ -1,5 +1,7 @@
 package kilargo_android.internetics.com.kilargo.fragment;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,14 +14,13 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
-import com.shehabic.droppy.DroppyClickCallbackInterface;
-import com.shehabic.droppy.DroppyMenuItem;
-import com.shehabic.droppy.DroppyMenuPopup;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,6 +34,7 @@ import kilargo_android.internetics.com.kilargo.adapter.KKListAdapter;
 import kilargo_android.internetics.com.kilargo.model.JsonFetcher;
 import kilargo_android.internetics.com.kilargo.model.Product;
 import kilargo_android.internetics.com.kilargo.util.Global;
+import kilargo_android.internetics.com.kilargo.util.UIHelper;
 import kilargo_android.internetics.com.kilargo.widget.AVLoadingIndicatorDialog;
 
 /**
@@ -119,39 +121,13 @@ public class MainFragment extends BaseFragment {
     }
 
 
-    private List<Product> searchResult;
+    private List<Product> mSearchResult;
+    private PopupWindow   mSearchResultPopupWindow;
     private void setupSearch() {
-
-        final DroppyMenuPopup.Builder droppyBuilder = new DroppyMenuPopup.Builder(getActivity(), mSearchView);
-
-        droppyBuilder.setOnClick(new DroppyClickCallbackInterface() {
-            @Override
-            public void call(View v, int id) {
-
-                mSearchView.clearFocus();
-
-                Product selectedProduct = searchResult.get(id);
-
-                ProductFragment newFragment = new ProductFragment();
-                newFragment.setProductList(Arrays.asList(selectedProduct));
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.setCustomAnimations(R.anim.fragment_slide_left_enter,
-                        R.anim.fragment_slide_left_exit,
-                        0,
-                        0);
-                transaction.replace(R.id.fragment_container, newFragment);
-                transaction.addToBackStack("ProductFragment" +System.currentTimeMillis());
-                transaction.commit();
-
-            }
-        });
-
-        final DroppyMenuPopup droppyMenu = droppyBuilder.build();
 
         mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                droppyMenu.dismiss(false);
                 return false;
             }
         });
@@ -164,52 +140,98 @@ public class MainFragment extends BaseFragment {
             @Override
             public boolean onQueryTextChange(String s) {
 
-                searchResult = JsonFetcher.sharedFetcher().getProductsWithAnyKeyword(s);
-                if (searchResult.size() >0) {
+                mSearchResult = JsonFetcher.sharedFetcher().getProductsWithAnyKeyword(s);
 
+                if (mSearchResult.size() ==0 && mSearchResultPopupWindow != null) {
+                    mSearchResultPopupWindow.dismiss();
+                    mSearchResultPopupWindow = null;
+                    return false;
+                }
 
-                    int index = 0;
-                    for (Product item : searchResult) {
+                LayoutInflater layoutInflater = (LayoutInflater)getActivity()
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View popupView = layoutInflater.inflate(R.layout.search_result_popup, null);
 
-                        if (index == searchResult.size() - 1) {
-                            droppyBuilder.addMenuItem(new DroppyMenuItem(item.mProductName));
-                        } else {
-                            droppyBuilder.addMenuItem(new DroppyMenuItem(item.mProductName))
-                                    .addSeparator();
+                LinearLayout scrollViewContentLL = (LinearLayout) popupView.findViewById(R.id.search_result_scrollview_content_ll);
+
+                scrollViewContentLL.removeAllViews();
+
+                int i = 0;
+                for (Product item:mSearchResult) {
+
+                    final View searchResultItem = LayoutInflater.from(getActivity()).inflate(R.layout.search_result_item, null);
+                    searchResultItem.setTag(String.format("%d",i));
+                    searchResultItem.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            searchResultItemClicked(view);
                         }
+                    });
 
+                    TextView summaryTextView = (TextView) searchResultItem.findViewById(R.id.summary_textview);
+
+                    String text = String.format("%s->%s",item.mCategory,item.mSubcategory);
+                    summaryTextView.setText(text);
+
+                    scrollViewContentLL.addView(searchResultItem);
+
+                    if (i < mSearchResult.size() -1) {
+                        int dp5 = (int) UIHelper.convertDpToPixel(5);
+                        View separator = new View(getActivity());
+                        LinearLayout.LayoutParams layoutParams =new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
+                        layoutParams.setMargins(dp5 *2,dp5,dp5,dp5 *2);
+                        separator.setBackgroundColor(Color.DKGRAY);
+                        separator.setLayoutParams(layoutParams);
+                        scrollViewContentLL.addView(separator);
                     }
 
-                    droppyMenu.show();
-                } else {
-//                    droppyMenu.hideAnimationCompleted(false);
+                    i++;
                 }
+
+                if (mSearchResultPopupWindow == null) {
+                    mSearchResultPopupWindow = new PopupWindow(popupView,mSearchView.getWidth(), (int) UIHelper.convertDpToPixel(150),true);
+                    mSearchResultPopupWindow.setFocusable(false);
+                    mSearchResultPopupWindow.setOutsideTouchable(true);
+
+                }
+
+                if (mSearchResultPopupWindow.isShowing() == false) {
+                    mSearchResultPopupWindow.showAsDropDown(mSearchView,0,10);
+                }
+
 
                 return false;
             }
         });
     }
 
+    private void searchResultItemClicked(View view) {
+
+        int index = Integer.parseInt((String) view.getTag());
+
+        Product selectedProduct = mSearchResult.get(index);
+
+        ProductFragment newFragment = new ProductFragment();
+        newFragment.setProductList(Arrays.asList(selectedProduct));
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.fragment_slide_left_enter,
+                R.anim.fragment_slide_left_exit,
+                0,
+                0);
+        transaction.replace(R.id.fragment_container, newFragment);
+        transaction.addToBackStack("ProductFragment" +System.currentTimeMillis());
+        transaction.commit();
+
+        mSearchView.setQuery("", false);
+        mSearchView.clearFocus();
+
+
+    }
+
     private void refreshButtonClicked() {
         fetchData();
     }
 
-
-    private void showProductDetails(int i) {
-
-        ProductFragment newFragment = new ProductFragment();
-
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(R.anim.fragment_slide_left_enter,
-                R.anim.fragment_slide_left_exit,
-                R.anim.fragment_slide_pop_enter,
-                R.anim.fragment_slide_pop_exit);
-        transaction.replace(R.id.fragment_container, newFragment);
-        transaction.addToBackStack("ProductFragment" + System.currentTimeMillis());
-        transaction.commit();
-
-
-    }
 
     private void listItemClicked(int i) {
 
@@ -247,7 +269,6 @@ public class MainFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
 
-//        mSearchView.clearFocus();
         getActivity().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
@@ -290,43 +311,43 @@ public class MainFragment extends BaseFragment {
         }
 
         Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
+        handler.postDelayed(new Runnable() {
 
+            @Override
+            public void run() {
+
+
+                String url = Global.feedURL;
+                JsonFetcher.sharedFetcher().fetchMenu(url).setOnCompletionHandler(new JsonFetcher.OnCompletionHandler() {
                     @Override
-                    public void run() {
+                    public void responseJSON(boolean result, String errorMessage) {
 
+                        //mProgressDialog.dismiss();
 
-                        String url = Global.feedURL;
-                        JsonFetcher.sharedFetcher().fetchMenu(url).setOnCompletionHandler(new JsonFetcher.OnCompletionHandler() {
-                            @Override
-                            public void responseJSON(boolean result, String errorMessage) {
+                        if (mAVLoadingIndicatorDialog != null) {
+                            mAVLoadingIndicatorDialog.cancel();
+                        }
 
-                                //mProgressDialog.dismiss();
+                        if (mSwipeRefreshLayout.isRefreshing()) {
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        }
 
-                                if (mAVLoadingIndicatorDialog != null) {
-                                    mAVLoadingIndicatorDialog.cancel();
-                                }
+                        if (result == false) {
 
-                                if (mSwipeRefreshLayout.isRefreshing()) {
-                                    mSwipeRefreshLayout.setRefreshing(false);
-                                }
+                            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                                    .setTitleText("Alert")
+                                    .setContentText("Failed to fetch data from server, please try again")
+                                    .show();
+                        }
 
-                                if (result == false) {
-
-                                    new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
-                                            .setTitleText("Alert")
-                                            .setContentText("Failed to fetch data from server, please try again")
-                                            .show();
-                                }
-
-                                refreshList();
-
-                            }
-                        });
+                        refreshList();
 
                     }
+                });
 
-                }, 1000); // 5000ms delay
+            }
+
+        }, 1000); // 5000ms delay
     }
 
 

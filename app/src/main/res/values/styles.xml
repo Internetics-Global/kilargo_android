@@ -3,7 +3,6 @@
     <style name="AppTheme" parent="@style/MaterialDesignLibraryTheme.Light">
         <item name="colorPrimary">#3f51b5</item>
         <item name="colorPrimaryDark">#303f9f</item>
-        <item name="droppyMenuItemStyle">@style/customMenuItem</item>
     </style>
 
     <style name="button_setting_list_item">
@@ -16,11 +15,6 @@
         <item name="android:gravity">left|center_vertical</item>
         <item name="android:textSize">14sp</item>
         <item name="android:drawableRight">@drawable/right_arrow</item>
-    </style>
-
-
-    <style name="customMenuItem" parent="Droppy.DroppyMenuItem">
-        <item name="android:layout_width">300dp</item>
     </style>
 
 </resources>

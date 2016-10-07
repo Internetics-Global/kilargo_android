@@ -6,13 +6,14 @@
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:layout_width="match_parent"
-    android:layout_height="44dp"
-    android:background="@drawable/rounded_searchview_bg"
+    android:layout_height="wrap_content"
+
     >
 
     <SearchView
+        android:background="@drawable/rounded_searchview_bg"
         android:id="@+id/search_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></SearchView>
+        android:layout_height="wrap_content"></SearchView>
 
 </FrameLayout>

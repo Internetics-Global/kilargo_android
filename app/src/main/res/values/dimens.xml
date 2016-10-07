@@ -6,4 +6,5 @@
     <dimen name="product_info_dialog_item_summary_width">120dp</dimen>
     <dimen name="about_content_width">320dp</dimen>
     <dimen name="about_content_height">800dp</dimen>
+    <dimen name="product_info_dialog_scrollview_width">300dp</dimen>
 </resources>

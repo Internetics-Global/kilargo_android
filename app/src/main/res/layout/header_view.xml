@@ -18,14 +18,17 @@
             android:scaleType="fitCenter"
             android:layout_gravity="left|center_vertical"
             android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
             android:layout_width="219dp"
             android:layout_height="78dp"/>
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_height="34dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:text="Back"
@@ -38,12 +41,14 @@
 
         <Button
             android:id="@+id/refresh_button"
-            android:visibility="invisible"
+            android:visibility="visible"
             android:layout_width="24dp"
             android:layout_height="24dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
             android:layout_gravity="right"
             android:background="@drawable/refresh"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="5dp"
             android:layout_marginTop="10dp"/>
 
     </FrameLayout>
