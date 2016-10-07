@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -37,6 +38,7 @@ public class SubFragment extends BaseFragment {
 
     @Bind(R.id.search_view)  SearchView mSearchView;
     @Bind(R.id.listview)     ListView   mListView;
+    @Bind(R.id.refresh_button) Button   mRefreshButton;
     @Bind(R.id.back_textview)TextView mBackTextView;
 
     private KKListAdapter mAdapter;
@@ -76,6 +78,8 @@ public class SubFragment extends BaseFragment {
     }
 
     private void setupView(View baseView) {
+
+        mRefreshButton.setVisibility(View.INVISIBLE);
 
         mAdapter = new KKListAdapter(getActivity());
 

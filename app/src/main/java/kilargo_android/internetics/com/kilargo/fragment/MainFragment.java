@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -33,6 +34,7 @@ import kilargo_android.internetics.com.kilargo.activity.MainActivity;
 import kilargo_android.internetics.com.kilargo.adapter.KKListAdapter;
 import kilargo_android.internetics.com.kilargo.model.JsonFetcher;
 import kilargo_android.internetics.com.kilargo.model.Product;
+import kilargo_android.internetics.com.kilargo.util.AppContext;
 import kilargo_android.internetics.com.kilargo.util.Global;
 import kilargo_android.internetics.com.kilargo.util.UIHelper;
 import kilargo_android.internetics.com.kilargo.widget.AVLoadingIndicatorDialog;
@@ -263,6 +265,14 @@ public class MainFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
+        AppContext myApp = (AppContext)getActivity().getApplication();
+        if (myApp.onceToken == false)
+        {
+            fetchData();
+            myApp.onceToken = true;
+        }
+
+        Logger.d("onResume");
     }
 
     @Override

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -42,8 +43,9 @@ import kilargo_android.internetics.com.kilargo.util.UIHelper;
  */
 public class ProductFragment extends BaseFragment implements ViewPager.OnPageChangeListener {
 
-    @Bind(R.id.search_view)                  SearchView mSearchView;
+    @Bind(R.id.search_view)                   SearchView mSearchView;
     @Bind(R.id.viewpager)                     ViewPager mViewPager;
+    @Bind(R.id.refresh_button)                Button mRefreshButton;
     @Bind(R.id.product_info_textview)         TextView     mProductInfoTextView;
     @Bind(R.id.product_installation_textview) TextView     mProductInstallationTextView;
 
@@ -84,6 +86,8 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
 
 
     private void setupView(View baseView) {
+
+        mRefreshButton.setVisibility(View.INVISIBLE);
 
         mAdapter = new KKImageScrollAdapter(getActivity());
         mViewPager.setAdapter(mAdapter);

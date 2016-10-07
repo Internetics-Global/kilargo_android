@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import kilargo_android.internetics.com.kilargo.R;
 import kilargo_android.internetics.com.kilargo.fragment.AboutFragment;
+import kilargo_android.internetics.com.kilargo.fragment.HomeFragment;
 import kilargo_android.internetics.com.kilargo.fragment.MainFragment;
 import kilargo_android.internetics.com.kilargo.fragment.MoreFragment;
 import kilargo_android.internetics.com.kilargo.fragment.SettingFragment;
@@ -52,9 +53,9 @@ public class MainActivity extends BaseActivity implements android.support.v4.app
         ButterKnife.bind(this);
 
         if (savedInstanceState == null) {
-            final android.support.v4.app.Fragment mainFragment = new MainFragment();
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, mainFragment,"MainFragment").commit();
+            final android.support.v4.app.Fragment homeFragment = new HomeFragment();
+            getSupportFragmentManager().beginTransaction().disallowAddToBackStack()
+                    .add(R.id.fragment_container, homeFragment,"HomeFragment").commit();
 
             final MoreFragment moreFragment = new MoreFragment();
             getSupportFragmentManager().beginTransaction()
@@ -89,37 +90,6 @@ public class MainActivity extends BaseActivity implements android.support.v4.app
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        AppContext myApp = (AppContext)this.getApplication();
-        if (myApp.wasInBackground == false)
-        {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            String targetFragmentTag = "MainFragment";
-            MainFragment myFragment = (MainFragment) fragmentManager.findFragmentByTag(targetFragmentTag);
-            if (myFragment != null) {
-
-                int count = fragmentManager.getBackStackEntryCount();
-
-                if (count == 0) {  // no back,
-                    myFragment.fetchData();
-                } else {
-                    //ideally, there's no this case. However, if there's a memory leak which could not free MainFragment, it does exist
-                    String fragmentTag = fragmentManager.getBackStackEntryAt(count - 1).getName();
-                    if (myFragment != null && targetFragmentTag.equals(fragmentTag)) {
-                        myFragment.fetchData();
-                    }
-                }
-
-            }
-
-
-        }
-
-        Logger.d("onResume");
-    }
 
     @Override
     protected void onPause() {

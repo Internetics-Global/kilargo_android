@@ -42,6 +42,8 @@ public class AppContext extends Application {
     public boolean wasInBackground;
     private final long MAX_ACTIVITY_TRANSITION_TIME_MS = 2000;
 
+    public boolean onceToken = false;
+
 
     public void startActivityTransitionTimer() {
         this.mActivityTransitionTimer = new Timer();
