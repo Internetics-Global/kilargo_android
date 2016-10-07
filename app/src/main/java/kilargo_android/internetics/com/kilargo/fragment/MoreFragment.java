@@ -24,6 +24,7 @@ public class MoreFragment extends BaseFragment {
     @Bind(R.id.button_setting_about)                     Button         mAboutButton;
     @Bind(R.id.version_info)                             TextView       mVersionTextView;
     @Bind(R.id.back_textview)                            TextView       mNaviBarBackTextView;
+    @Bind(R.id.refresh_button)                           Button         mRefreshButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,9 @@ public class MoreFragment extends BaseFragment {
 
         View view = inflater.inflate(R.layout.fragment_more, null);
         ButterKnife.bind(this,view);
+
+        mRefreshButton.setVisibility(View.INVISIBLE
+        );
 
         mSettingButton.setOnClickListener(new View.OnClickListener() {
             @Override

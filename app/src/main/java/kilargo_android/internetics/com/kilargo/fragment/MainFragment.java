@@ -108,7 +108,7 @@ public class MainFragment extends BaseFragment {
         mBackTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                drawerButtonClicked(view);
+                drawerButtonClicked();
             }
         });
 
@@ -269,10 +269,14 @@ public class MainFragment extends BaseFragment {
         if (myApp.onceToken == false)
         {
             fetchData();
+            drawerButtonClicked();
             myApp.onceToken = true;
         }
 
+
+
         Logger.d("onResume");
+
     }
 
     @Override
@@ -363,7 +367,7 @@ public class MainFragment extends BaseFragment {
 
 
 
-    private void drawerButtonClicked(View view) {
+    private void drawerButtonClicked() {
         ((MainActivity)getActivity()).switchDrawer();
     }
 }
