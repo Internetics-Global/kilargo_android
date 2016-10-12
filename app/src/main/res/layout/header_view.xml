@@ -5,22 +5,14 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="133dp">
+        android:layout_height="113dp">
 
         <ImageView
-            android:src="@drawable/top_banner_bg"
-            android:scaleType="fitXY"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-        <ImageView
-            android:src="@drawable/top_banner_logo"
+            android:src="@drawable/logo_banner"
             android:scaleType="fitCenter"
-            android:layout_gravity="left|center_vertical"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="10dp"
-            android:layout_width="219dp"
-            android:layout_height="78dp"/>
+            android:layout_gravity="center"
+            android:layout_width="139dp"
+            android:layout_height="48dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -29,23 +21,23 @@
             android:paddingRight="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:text="Back"
-            android:layout_marginTop="10dp"
             android:textSize="16sp"
             android:textColor="@android:color/white"
             android:gravity="left|center_vertical"
-            android:drawableLeft="@drawable/left_arrow"
+            android:drawableLeft="@drawable/back_arrow"
             android:id="@+id/back_textview"/>
 
         <Button
             android:id="@+id/refresh_button"
             android:visibility="visible"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="18dp"
+            android:layout_height="22dp"
             android:paddingLeft="5dp"
-            android:paddingRight="5dp"
+            android:paddingRight="10dp"
             android:layout_gravity="right"
             android:background="@drawable/refresh"
             android:layout_marginRight="5dp"

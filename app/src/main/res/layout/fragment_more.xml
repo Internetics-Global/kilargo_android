@@ -2,21 +2,27 @@
     android:background="@android:color/white"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
+   <ImageView
+       android:layout_width="match_parent"
+       android:layout_height="140dp"
+       android:layout_marginTop="0dp"
+       android:scaleType="fitXY"
+       android:src="@drawable/left_view_top"/>
+
     <include
         layout="@layout/header_view"
         android:id="@+id/header_view"
         android:layout_width="match_parent"
-        android:layout_height="133dp"
+        android:layout_height="113dp"
         android:layout_alignParentTop="true"/>
-
 
     <ScrollView
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="133dp"
-        android:background="@drawable/left_view_bottom_background"
+        android:layout_marginTop="140dp"
+        android:background="#007dc6"
         android:scrollbars="none">
         <LinearLayout
             android:layout_width="match_parent"

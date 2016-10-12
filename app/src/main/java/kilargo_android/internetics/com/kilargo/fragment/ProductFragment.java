@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -46,8 +47,8 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
     @Bind(R.id.search_view)                   SearchView mSearchView;
     @Bind(R.id.viewpager)                     ViewPager mViewPager;
     @Bind(R.id.refresh_button)                Button mRefreshButton;
-    @Bind(R.id.product_info_textview)         TextView     mProductInfoTextView;
-    @Bind(R.id.product_installation_textview) TextView     mProductInstallationTextView;
+    @Bind(R.id.product_info_imagebutton)         ImageButton     mProductInfoButton;
+    @Bind(R.id.product_installation_imagebutton) ImageButton     mProductInstallationButton;
 
     @Bind(R.id.product_name_textview)         TextView    mProductNameTextView;
 
@@ -103,7 +104,7 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
         setupSearch();
 
 
-        mProductInfoTextView.setOnClickListener(new View.OnClickListener() {
+        mProductInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 switchProductContentVisibility();
@@ -111,7 +112,7 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
             }
         });
 
-        mProductInstallationTextView.setOnClickListener(new View.OnClickListener() {
+        mProductInstallationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 switchProductContentVisibility();
@@ -130,7 +131,7 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
 
         mBackTextView.setVisibility(View.VISIBLE);
         mBackTextView.setText("Back");
-        Drawable img = getResources().getDrawable(R.drawable.left_arrow );
+        Drawable img = getResources().getDrawable(R.drawable.back_arrow );
         img.setBounds( 0, 0, 24, 24 );
         mBackTextView.setCompoundDrawablesWithIntrinsicBounds( img, null, null, null);
         mBackTextView.setOnClickListener(new View.OnClickListener() {
@@ -450,6 +451,8 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
         LinearLayout ll = new LinearLayout(getActivity());
         LinearLayout.LayoutParams layoutParams =new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         ll.setLayoutParams(layoutParams);
+        int dp5 = (int) UIHelper.convertDpToPixel(5);
+        ll.setPadding(dp5,dp5*2,dp5,dp5*2);
         ll.setOrientation(LinearLayout.VERTICAL);
         mProductInfoScrollView.addView(ll);
 
@@ -480,7 +483,6 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
             ll.addView(item);
 
             if (i < 2) {
-                int dp5 = (int) UIHelper.convertDpToPixel(5);
                 View separator = new View(getActivity());
                 layoutParams =new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
                 layoutParams.setMargins(dp5 *2,dp5,dp5,dp5 *2);

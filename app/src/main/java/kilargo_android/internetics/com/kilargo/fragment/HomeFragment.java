@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -18,7 +20,11 @@ import kilargo_android.internetics.com.kilargo.R;
 
 public class HomeFragment extends BaseFragment  {
 
-    @Bind(R.id.button_get_started) Button mGetStartedButton;
+    @Bind(R.id.button_get_started) ImageButton mGetStartedButton;
+
+    @Bind(R.id.back_textview)      TextView    mBackTextView;
+
+    @Bind(R.id.refresh_button)      Button     mRefreshButton;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +48,9 @@ public class HomeFragment extends BaseFragment  {
     }
 
     private void setupView(View view) {
+
+        mBackTextView.setVisibility(View.INVISIBLE);
+        mRefreshButton.setVisibility(View.INVISIBLE);
 
         mGetStartedButton.setOnClickListener(new View.OnClickListener() {
             @Override

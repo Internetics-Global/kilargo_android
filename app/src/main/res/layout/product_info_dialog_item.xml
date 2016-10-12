@@ -2,20 +2,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
 
     <TextView android:id="@+id/summary_textview"
-              android:textSize="12sp"
+              android:textSize="@dimen/product_info_dialog_text_size"
               android:text="summary Mounted"
               android:layout_width="@dimen/product_info_dialog_item_summary_width"
               android:layout_height="wrap_content"/>
 
     <TextView android:id="@+id/detail_textview"
               android:layout_toRightOf="@id/summary_textview"
-              android:textSize="12sp"
+              android:textSize="@dimen/product_info_dialog_text_size"
               android:layout_marginLeft="20dp"
               android:text="detail Mounted"
               android:layout_width="match_parent"

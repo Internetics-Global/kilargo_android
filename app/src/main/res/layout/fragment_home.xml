@@ -9,61 +9,34 @@
     android:background="@android:color/white"
     tools:context=".activity.MainActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="133dp"
-        android:background="@android:color/white">
-
-        <ImageView
-            android:layout_gravity="center"
-            android:layout_width="280dp"
-            android:layout_height="97dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/splash_logo"/>
-
-    </RelativeLayout>
+    <include layout="@layout/header_view"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/home_bg"
-        android:scaleType="fitXY"/>
+        <View
+            android:layout_marginTop="200dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#eff3f8"></View>
+
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/home_bg"
+            android:src="@drawable/home_whole"
             android:scaleType="fitXY"/>
 
-        <ImageView
-            android:layout_width="218dp"
-            android:layout_height="130dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/home_logo"
-            android:scaleType="fitXY"/>
-
-        <ImageView
-            android:layout_width="320dp"
-            android:layout_height="204dp"
-            android:src="@drawable/home_image"
-            android:layout_marginBottom="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:scaleType="center"/>
         
-        <Button
-            android:layout_width="137dp"
-            android:layout_height="33dp"
+        <ImageButton
+            android:layout_width="116dp"
+            android:layout_height="31dp"
             android:id="@+id/button_get_started"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/rounded_get_started_button_bg"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/get_started_button"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
             android:text="Get Started"/>
 
     </RelativeLayout>

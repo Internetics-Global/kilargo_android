@@ -36,7 +36,7 @@ public class SettingFragment extends BaseFragment {
 
         mBackTextView.setVisibility(View.VISIBLE);
         mBackTextView.setText("Back");
-        Drawable img = getResources().getDrawable(R.drawable.left_arrow );
+        Drawable img = getResources().getDrawable(R.drawable.back_arrow );
         img.setBounds( 0, 0, 24, 24 );
         mBackTextView.setCompoundDrawablesWithIntrinsicBounds( img, null, null, null);
         mBackTextView.setOnClickListener(new View.OnClickListener() {
