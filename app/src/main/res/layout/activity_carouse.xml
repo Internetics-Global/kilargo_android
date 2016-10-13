@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<kilargo_android.internetics.com.kilargo.widget.HackyViewPager
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/view_pager"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+
+<kilargo_android.internetics.com.kilargo.widget.BaseFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="#202020"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <Button
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="right|top"
+        android:id="@+id/close_button"
+        android:padding="10dp"
+        android:layout_margin="15dp"
+        android:background="@drawable/close"/>
+
+    <kilargo_android.internetics.com.kilargo.widget.HackyViewPager
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/view_pager"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:scrollbars="horizontal"
+        android:layout_height="match_parent" />
+
+</kilargo_android.internetics.com.kilargo.widget.BaseFrameLayout>

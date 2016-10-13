@@ -9,4 +9,5 @@
     <dimen name="product_info_dialog_scrollview_width">300dp</dimen>
     <dimen name="product_info_dialog_height">150dp</dimen>
     <dimen name="product_info_dialog_text_size">12sp</dimen>
+    <dimen name="head_view_icon_margin">15dp</dimen>
 </resources>

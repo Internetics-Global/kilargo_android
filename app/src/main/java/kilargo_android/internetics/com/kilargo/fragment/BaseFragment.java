@@ -10,15 +10,6 @@ import kilargo_android.internetics.com.kilargo.util.FragmentUtils;
  */
 public class BaseFragment extends Fragment {
 
-    @Override
-        public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
-        if (FragmentUtils.sDisableFragmentAnimations) {
-            Animation a = new Animation() {};
-            a.setDuration(0);
-            return a;
-        }
-        return super.onCreateAnimation(transit, enter, nextAnim);
-    }
 }
 
 

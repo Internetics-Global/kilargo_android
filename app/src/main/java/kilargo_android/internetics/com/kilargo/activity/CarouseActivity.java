@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.common.base.Strings;
 import com.squareup.picasso.Callback;
@@ -16,6 +18,8 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import kilargo_android.internetics.com.kilargo.R;
 import kilargo_android.internetics.com.kilargo.model.Product;
 import kilargo_android.internetics.com.kilargo.util.Global;
@@ -28,8 +32,10 @@ import uk.co.senab.photoview.PhotoViewAttacher;
  */
 public class CarouseActivity extends BaseActivity {
 
-    private ArrayList<String> mValidImages = new ArrayList<>();
+    @Bind(R.id.close_button)  Button mCloseButton;
+    @Bind(R.id.view_pager)  ViewPager mViewPager;
 
+    private ArrayList<String> mValidImages = new ArrayList<>();
 
     private static final String EXTRA_PARCEL = "product";
 
@@ -43,8 +49,7 @@ public class CarouseActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_carouse);
-        ViewPager mViewPager = (HackyViewPager) findViewById(R.id.view_pager);
-        setContentView(mViewPager);
+        ButterKnife.bind(this);
 
         Product product = Parcels.unwrap(getIntent().getParcelableExtra(EXTRA_PARCEL));
         if (Strings.isNullOrEmpty(product.mImage1) == false) {
@@ -67,6 +72,18 @@ public class CarouseActivity extends BaseActivity {
         }
 
         mViewPager.setAdapter(new SamplePagerAdapter());
+
+        mCloseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
+    }
+
+    private void dismiss() {
+
+        this.finish();
     }
 
     class SamplePagerAdapter extends PagerAdapter {

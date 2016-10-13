@@ -16,12 +16,11 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="34dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_height="22dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginLeft="@dimen/head_view_icon_margin"
+            android:layout_marginTop="@dimen/head_view_icon_margin"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:text="Back"
@@ -36,12 +35,12 @@
             android:visibility="visible"
             android:layout_width="18dp"
             android:layout_height="22dp"
-            android:paddingLeft="5dp"
+            android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:layout_gravity="right"
             android:background="@drawable/refresh"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginRight="@dimen/head_view_icon_margin"
+            android:layout_marginTop="@dimen/head_view_icon_margin"/>
 
     </FrameLayout>
 

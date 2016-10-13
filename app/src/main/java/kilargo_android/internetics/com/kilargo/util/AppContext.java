@@ -37,14 +37,21 @@ public class AppContext extends Application {
     }
 
 
-    private Timer mActivityTransitionTimer;
-    private TimerTask mActivityTransitionTimerTask;
-    public boolean wasInBackground;
-    private final long MAX_ACTIVITY_TRANSITION_TIME_MS = 2000;
+    private       Timer      mActivityTransitionTimer;
+    private       TimerTask  mActivityTransitionTimerTask;
+    private final long       MAX_ACTIVITY_TRANSITION_TIME_MS = 2000;
+    public        boolean    wasInBackground = false;
 
+
+    /*
+     * Similar with dispatch_once in iOS
+     */
     public boolean onceToken = false;
 
 
+    /*
+     * called when  onPause  in base activity
+     */
     public void startActivityTransitionTimer() {
         this.mActivityTransitionTimer = new Timer();
         this.mActivityTransitionTimerTask = new TimerTask() {
@@ -57,6 +64,9 @@ public class AppContext extends Application {
                 MAX_ACTIVITY_TRANSITION_TIME_MS);
     }
 
+    /*
+     * called when  onResume  in base activity
+     */
     public void stopActivityTransitionTimer() {
         if (this.mActivityTransitionTimerTask != null) {
             this.mActivityTransitionTimerTask.cancel();
