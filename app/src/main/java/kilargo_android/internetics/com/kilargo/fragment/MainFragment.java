@@ -99,6 +99,7 @@ public class MainFragment extends BaseFragment {
                 refreshButtonClicked();
             }
         });
+        increaseControlTouchArea(mRefreshButton,40);
 
         mBackTextView.setVisibility(View.VISIBLE);
         mBackTextView.setText("");
