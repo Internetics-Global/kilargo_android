@@ -61,6 +61,11 @@ public class KKImageScrollAdapter extends PagerAdapter {
         Product product = mProductList.get(position);
 
         String url = Global.imageBaseURL + product.productImage;
+        if (url.contains(".png") || url.contains(".jpg") || url.contains(".jpeg")) {
+
+        } else {
+            url = url + ".png";
+        }
         ImageView productImageView = (ImageView) view.findViewById(R.id.product_imageview);
         Picasso.with(mContext)
                 .load(url)

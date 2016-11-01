@@ -98,6 +98,11 @@ public class CarouseActivity extends BaseActivity {
             PhotoView photoView = new PhotoView(container.getContext());
             final PhotoViewAttacher attacher = new PhotoViewAttacher(photoView);
             String url = Global.imageBaseURL + mValidImages.get(position);
+            if (url.contains(".png") || url.contains(".jpg") || url.contains(".jpeg")) {
+
+            } else {
+                url = url + ".png";
+            }
 
             Picasso.with(CarouseActivity.this)
                     .load(url)
