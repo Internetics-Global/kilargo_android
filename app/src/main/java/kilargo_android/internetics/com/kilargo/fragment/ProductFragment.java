@@ -431,11 +431,11 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
         ll.setOrientation(LinearLayout.VERTICAL);
         mProductInfoScrollView.addView(ll);
 
-        View item = LayoutInflater.from(getActivity()).inflate(R.layout.product_info_dialog_item, null);
-        TextView summaryTextView = (TextView) item.findViewById(R.id.summary_textview);
+        View item = LayoutInflater.from(getActivity()).inflate(R.layout.product_installation_dialog_item, null);
+//        TextView summaryTextView = (TextView) item.findViewById(R.id.summary_textview);
         TextView detailTextView = (TextView) item.findViewById(R.id.detail_textview);
 
-        summaryTextView.setText(product.installationInstructionTitle);
+        //summaryTextView.setText(product.installationInstructionTitle);
         detailTextView.setText(product.installationInstructionBody);
 
         ll.addView(item);
