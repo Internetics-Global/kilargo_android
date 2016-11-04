@@ -130,11 +130,14 @@ public class SubFragment extends BaseFragment {
             @Override
             public boolean onQueryTextChange(String s) {
 
-                mSearchResult = JsonFetcher.sharedFetcher().getProductsWithAnyKeyword(s);
-
-                if (mSearchResult.size() ==0 && mSearchResultPopupWindow != null) {
+                if (mSearchResultPopupWindow != null) {
                     mSearchResultPopupWindow.dismiss();
                     mSearchResultPopupWindow = null;
+                }
+
+                mSearchResult = JsonFetcher.sharedFetcher().getProductsWithAnyKeyword(s);
+
+                if (mSearchResult.size() ==0) {
                     return false;
                 }
 
@@ -178,12 +181,15 @@ public class SubFragment extends BaseFragment {
                     i++;
                 }
 
-                if (mSearchResultPopupWindow == null) {
-                    mSearchResultPopupWindow = new PopupWindow(popupView,mSearchView.getWidth(), (int) UIHelper.convertDpToPixel(150),true);
-                    mSearchResultPopupWindow.setFocusable(false);
-                    mSearchResultPopupWindow.setOutsideTouchable(true);
+                if (mSearchResultPopupWindow != null && mSearchResultPopupWindow.isShowing() == false) {
+                    mSearchResultPopupWindow.dismiss();
 
                 }
+                mSearchResultPopupWindow = null;
+
+                mSearchResultPopupWindow = new PopupWindow(popupView,mSearchView.getWidth(), (int) UIHelper.convertDpToPixel(150),true);
+                mSearchResultPopupWindow.setFocusable(false);
+                mSearchResultPopupWindow.setOutsideTouchable(true);
 
                 if (mSearchResultPopupWindow.isShowing() == false) {
                     mSearchResultPopupWindow.showAsDropDown(mSearchView,0,10);
@@ -201,6 +207,12 @@ public class SubFragment extends BaseFragment {
 
         Product selectedProduct = mSearchResult.get(index);
 
+        mSearchView.setQuery("",false);
+        mSearchView.clearFocus();
+        if (mSearchResultPopupWindow != null) {
+            mSearchResultPopupWindow.dismiss();
+        }
+
         ProductFragment newFragment = new ProductFragment();
         newFragment.setProductList(Arrays.asList(selectedProduct));
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -212,8 +224,6 @@ public class SubFragment extends BaseFragment {
         transaction.addToBackStack("ProductFragment" +System.currentTimeMillis());
         transaction.commit();
 
-        mSearchView.setQuery("", false);
-        mSearchView.clearFocus();
 
 
     }
