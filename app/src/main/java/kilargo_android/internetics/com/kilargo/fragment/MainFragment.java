@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -23,15 +22,20 @@ import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Callable;
 
+import bolts.Task;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import kilargo_android.internetics.com.kilargo.R;
 import kilargo_android.internetics.com.kilargo.activity.MainActivity;
-import kilargo_android.internetics.com.kilargo.adapter.KKListAdapter;
+import kilargo_android.internetics.com.kilargo.adapter.KKCategoryListAdapter;
+import kilargo_android.internetics.com.kilargo.model.Category;
 import kilargo_android.internetics.com.kilargo.model.JsonFetcher;
 import kilargo_android.internetics.com.kilargo.model.Product;
 import kilargo_android.internetics.com.kilargo.util.AppContext;
@@ -54,7 +58,7 @@ public class MainFragment extends BaseFragment {
     private AVLoadingIndicatorDialog mAVLoadingIndicatorDialog;
 
 
-    private KKListAdapter mAdapter;
+    private KKCategoryListAdapter mAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,7 +84,7 @@ public class MainFragment extends BaseFragment {
 
 
     private void setupView(View baseView) {
-        mAdapter = new KKListAdapter(getActivity());
+        mAdapter = new KKCategoryListAdapter(getActivity());
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -124,7 +128,7 @@ public class MainFragment extends BaseFragment {
     }
 
 
-    private List<Product> mSearchResult;
+    private ArrayList<HashMap<String,Object>> mSearchResult;
     private PopupWindow   mSearchResultPopupWindow;
     private void setupSearch() {
 
@@ -148,9 +152,9 @@ public class MainFragment extends BaseFragment {
                     mSearchResultPopupWindow = null;
                 }
 
-                mSearchResult = JsonFetcher.sharedFetcher().getProductsWithAnyKeyword(s);
+                List<Product> rawSearchResult = JsonFetcher.sharedFetcher().getProductsWithAnyKeyword(s);
 
-                if (mSearchResult.size() ==0) {
+                if (rawSearchResult.size() ==0) {
                     return false;
                 }
 
@@ -162,8 +166,22 @@ public class MainFragment extends BaseFragment {
 
                 scrollViewContentLL.removeAllViews();
 
+                mSearchResult = new ArrayList<>();
+                for (Product product : rawSearchResult) {
+
+                    for (Integer subCategoryID : product.subcategoryIDList) {
+                        String subCategoryName = JsonFetcher.sharedFetcher().getSubCategoryName(subCategoryID);
+                        String categoryName = JsonFetcher.sharedFetcher().getMasterCategoryNameFromSubCategoryID(subCategoryID);
+                        HashMap<String,Object> dict = new HashMap<String, Object>();
+                        dict.put("subCategoryName",subCategoryName);
+                        dict.put("categoryName",categoryName);
+                        dict.put("product",product);
+                        mSearchResult.add(dict);
+                    }
+                }
+
                 int i = 0;
-                for (Product item:mSearchResult) {
+                for (HashMap<String,Object> item:mSearchResult) {
 
                     final View searchResultItem = LayoutInflater.from(getActivity()).inflate(R.layout.search_result_item, null);
                     searchResultItem.setTag(String.format("%d",i));
@@ -176,7 +194,7 @@ public class MainFragment extends BaseFragment {
 
                     TextView summaryTextView = (TextView) searchResultItem.findViewById(R.id.summary_textview);
 
-                    String text = String.format("%s->%s",item.mCategory,item.mSubcategory);
+                    String text = String.format("%s->%s",item.get("categoryName"),item.get("subCategoryName"));
                     summaryTextView.setText(text);
 
                     scrollViewContentLL.addView(searchResultItem);
@@ -219,7 +237,7 @@ public class MainFragment extends BaseFragment {
 
         int index = Integer.parseInt((String) view.getTag());
 
-        Product selectedProduct = mSearchResult.get(index);
+        Product selectedProduct = (Product) mSearchResult.get(index).get("product");
 
 
         mSearchView.setQuery("",false);
@@ -251,10 +269,10 @@ public class MainFragment extends BaseFragment {
 
     private void listItemClicked(int i) {
 
-        List<String> categories = JsonFetcher.sharedFetcher().getCategory();
+        List<Category> categories = JsonFetcher.sharedFetcher().getAllCategories();
 
         SubFragment newFragment = new SubFragment();
-        newFragment.setParentCategoryName(categories.get(i));
+        newFragment.setParentCategoryID(categories.get(i).categoryID);
 
         FragmentTransaction transaction =  getActivity().getSupportFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.fragment_slide_left_enter,
@@ -317,9 +335,9 @@ public class MainFragment extends BaseFragment {
 
     private void refreshList() {
 
-        List<String> categores = JsonFetcher.sharedFetcher().getCategory();
+        List<Category> categories = JsonFetcher.sharedFetcher().getAllCategories();
 
-        mAdapter.setDataArrayList(categores);
+        mAdapter.setDataArrayList(categories);
         mAdapter.notifyDataSetInvalidated();
 
     }
@@ -345,30 +363,39 @@ public class MainFragment extends BaseFragment {
             public void run() {
 
 
-                String url = Global.feedURL;
-                JsonFetcher.sharedFetcher().fetchMenu(url).setOnCompletionHandler(new JsonFetcher.OnCompletionHandler() {
+                String url = Global.productFeedURL;
+                JsonFetcher.sharedFetcher().fetchAllFeed().setOnCompletionHandler(new JsonFetcher.OnCompletionHandler() {
                     @Override
-                    public void responseJSON(boolean result, String errorMessage) {
+                    public void responseJSON(final boolean result, String errorMessage) {
 
-                        //mProgressDialog.dismiss();
+                        Task.call(new Callable<Object>() {
+                            @Override
+                            public String call() throws Exception {
 
-                        if (mAVLoadingIndicatorDialog != null) {
-                            mAVLoadingIndicatorDialog.cancel();
-                        }
+                                //mProgressDialog.dismiss();
 
-                        if (mSwipeRefreshLayout.isRefreshing()) {
-                            mSwipeRefreshLayout.setRefreshing(false);
-                        }
+                                if (mAVLoadingIndicatorDialog != null) {
+                                    mAVLoadingIndicatorDialog.cancel();
+                                }
 
-                        if (result == false) {
+                                if (mSwipeRefreshLayout.isRefreshing()) {
+                                    mSwipeRefreshLayout.setRefreshing(false);
+                                }
 
-                            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
-                                    .setTitleText("Alert")
-                                    .setContentText("Failed to fetch data from server, please try again")
-                                    .show();
-                        }
+                                if (result == false) {
 
-                        refreshList();
+                                    new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                                            .setTitleText("Alert")
+                                            .setContentText("Failed to fetch data from server, please try again")
+                                            .show();
+                                }
+
+                                refreshList();
+
+
+                                return null;
+                            }
+                        },Task.UI_THREAD_EXECUTOR);
 
                     }
                 });

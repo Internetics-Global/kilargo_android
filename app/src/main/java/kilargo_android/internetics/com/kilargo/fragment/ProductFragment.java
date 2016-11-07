@@ -28,6 +28,7 @@ import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
@@ -147,7 +148,7 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
 
     }
 
-    private List<Product> mSearchResult;
+    private ArrayList<HashMap<String,Object>> mSearchResult;
     private PopupWindow mSearchResultPopupWindow;
     private void setupSearch() {
 
@@ -171,9 +172,9 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
                     mSearchResultPopupWindow = null;
                 }
 
-                mSearchResult = JsonFetcher.sharedFetcher().getProductsWithAnyKeyword(s);
+                List<Product> rawSearchResult = JsonFetcher.sharedFetcher().getProductsWithAnyKeyword(s);
 
-                if (mSearchResult.size() ==0) {
+                if (rawSearchResult.size() ==0) {
                     return false;
                 }
 
@@ -185,8 +186,22 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
 
                 scrollViewContentLL.removeAllViews();
 
+                mSearchResult = new ArrayList<>();
+                for (Product product : rawSearchResult) {
+
+                    for (Integer subCategoryID : product.subcategoryIDList) {
+                        String subCategoryName = JsonFetcher.sharedFetcher().getSubCategoryName(subCategoryID);
+                        String categoryName = JsonFetcher.sharedFetcher().getMasterCategoryNameFromSubCategoryID(subCategoryID);
+                        HashMap<String,Object> dict = new HashMap<String, Object>();
+                        dict.put("subCategoryName",subCategoryName);
+                        dict.put("categoryName",categoryName);
+                        dict.put("product",product);
+                        mSearchResult.add(dict);
+                    }
+                }
+
                 int i = 0;
-                for (Product item:mSearchResult) {
+                for (HashMap<String,Object> item:mSearchResult) {
 
                     final View searchResultItem = LayoutInflater.from(getActivity()).inflate(R.layout.search_result_item, null);
                     searchResultItem.setTag(String.format("%d",i));
@@ -199,7 +214,7 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
 
                     TextView summaryTextView = (TextView) searchResultItem.findViewById(R.id.summary_textview);
 
-                    String text = String.format("%s->%s",item.mCategory,item.mSubcategory);
+                    String text = String.format("%s->%s",item.get("categoryName"),item.get("subCategoryName"));
                     summaryTextView.setText(text);
 
                     scrollViewContentLL.addView(searchResultItem);
@@ -241,7 +256,7 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
 
         int index = Integer.parseInt((String) view.getTag());
 
-        Product selectedProduct = mSearchResult.get(index);
+        Product selectedProduct = (Product) mSearchResult.get(index).get("product");
 
         mSearchView.setQuery("",false);
         mSearchView.clearFocus();

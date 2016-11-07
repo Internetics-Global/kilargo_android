@@ -13,17 +13,18 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import kilargo_android.internetics.com.kilargo.R;
+import kilargo_android.internetics.com.kilargo.model.Category;
 
 /**
  * Created by BourneWang on 22/04/2016.
  */
-public class KKListAdapter extends BaseAdapter {
+public class KKCategoryListAdapter extends BaseAdapter {
 
     private Context     mContext;
 
-    private List<String> mDataArrayList = new ArrayList<>();
+    private List<Category> mDataArrayList = new ArrayList<>();
 
-    public KKListAdapter(Context c)
+    public KKCategoryListAdapter(Context c)
     {
         mContext = c;
     }
@@ -58,7 +59,7 @@ public class KKListAdapter extends BaseAdapter {
             view.setTag(holder);
         }
 
-        holder.titleTextView.setText(mDataArrayList.get(i));
+        holder.titleTextView.setText(mDataArrayList.get(i).categoryName);
 
         return view;
     }

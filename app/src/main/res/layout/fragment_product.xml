@@ -44,7 +44,7 @@
             android:layout_marginTop="60dp"
             android:gravity="left"
             android:textStyle="bold|italic"
-            android:text="test again test again"
+            android:text=" "
             android:textSize="22sp"
             android:textColor="@android:color/black"
             android:layout_width="match_parent"

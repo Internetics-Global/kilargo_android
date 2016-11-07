@@ -20,15 +20,18 @@ import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import kilargo_android.internetics.com.kilargo.R;
-import kilargo_android.internetics.com.kilargo.adapter.KKListAdapter;
+import kilargo_android.internetics.com.kilargo.adapter.KKSubCategoryListAdapter;
 import kilargo_android.internetics.com.kilargo.model.JsonFetcher;
 import kilargo_android.internetics.com.kilargo.model.Product;
+import kilargo_android.internetics.com.kilargo.model.SubCategory;
 import kilargo_android.internetics.com.kilargo.util.UIHelper;
 
 /**
@@ -41,11 +44,11 @@ public class SubFragment extends BaseFragment {
     @Bind(R.id.refresh_button) Button   mRefreshButton;
     @Bind(R.id.back_textview)TextView mBackTextView;
 
-    private KKListAdapter mAdapter;
+    private KKSubCategoryListAdapter mAdapter;
 
-    private String mParentCategoryName;
+    private Integer mParentCategoryID;
 
-    private List<String> mCategories;
+    private List<SubCategory> mSubCategories;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,7 +84,7 @@ public class SubFragment extends BaseFragment {
 
         mRefreshButton.setVisibility(View.INVISIBLE);
 
-        mAdapter = new KKListAdapter(getActivity());
+        mAdapter = new KKSubCategoryListAdapter(getActivity());
 
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -91,7 +94,7 @@ public class SubFragment extends BaseFragment {
             }
         });
 
-        mAdapter.setDataArrayList(mCategories);
+        mAdapter.setDataArrayList(mSubCategories);
         mAdapter.notifyDataSetInvalidated();
 
         setupSearch();
@@ -111,7 +114,7 @@ public class SubFragment extends BaseFragment {
 
     }
 
-    private List<Product> mSearchResult;
+    private ArrayList<HashMap<String,Object>> mSearchResult;
     private PopupWindow mSearchResultPopupWindow;
     private void setupSearch() {
 
@@ -135,9 +138,9 @@ public class SubFragment extends BaseFragment {
                     mSearchResultPopupWindow = null;
                 }
 
-                mSearchResult = JsonFetcher.sharedFetcher().getProductsWithAnyKeyword(s);
+                List<Product> rawSearchResult = JsonFetcher.sharedFetcher().getProductsWithAnyKeyword(s);
 
-                if (mSearchResult.size() ==0) {
+                if (rawSearchResult.size() ==0) {
                     return false;
                 }
 
@@ -149,8 +152,22 @@ public class SubFragment extends BaseFragment {
 
                 scrollViewContentLL.removeAllViews();
 
+                mSearchResult = new ArrayList<>();
+                for (Product product : rawSearchResult) {
+
+                    for (Integer subCategoryID : product.subcategoryIDList) {
+                        String subCategoryName = JsonFetcher.sharedFetcher().getSubCategoryName(subCategoryID);
+                        String categoryName = JsonFetcher.sharedFetcher().getMasterCategoryNameFromSubCategoryID(subCategoryID);
+                        HashMap<String,Object> dict = new HashMap<String, Object>();
+                        dict.put("subCategoryName",subCategoryName);
+                        dict.put("categoryName",categoryName);
+                        dict.put("product",product);
+                        mSearchResult.add(dict);
+                    }
+                }
+
                 int i = 0;
-                for (Product item:mSearchResult) {
+                for (HashMap<String,Object> item:mSearchResult) {
 
                     final View searchResultItem = LayoutInflater.from(getActivity()).inflate(R.layout.search_result_item, null);
                     searchResultItem.setTag(String.format("%d",i));
@@ -163,7 +180,7 @@ public class SubFragment extends BaseFragment {
 
                     TextView summaryTextView = (TextView) searchResultItem.findViewById(R.id.summary_textview);
 
-                    String text = String.format("%s->%s",item.mCategory,item.mSubcategory);
+                    String text = String.format("%s->%s",item.get("categoryName"),item.get("subCategoryName"));
                     summaryTextView.setText(text);
 
                     scrollViewContentLL.addView(searchResultItem);
@@ -205,7 +222,7 @@ public class SubFragment extends BaseFragment {
 
         int index = Integer.parseInt((String) view.getTag());
 
-        Product selectedProduct = mSearchResult.get(index);
+        Product selectedProduct = (Product) mSearchResult.get(index).get("product");
 
         mSearchView.setQuery("",false);
         mSearchView.clearFocus();
@@ -235,8 +252,10 @@ public class SubFragment extends BaseFragment {
 
     private void showProductDetails(int i) {
 
+        SubCategory selectedSubCategory = mSubCategories.get(i);
+
         ProductFragment newFragment = new ProductFragment();
-        List<Product> products = JsonFetcher.sharedFetcher().getProductsWithSubcategoryName(mCategories.get(i));
+        List<Product> products = JsonFetcher.sharedFetcher().getProducts(selectedSubCategory.masterCategoryID,selectedSubCategory.subcategoryID);
         newFragment.setProductList(products);
 
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -276,9 +295,9 @@ public class SubFragment extends BaseFragment {
 
     }
 
-    public void setParentCategoryName(String parentCategoryName) {
-        mParentCategoryName = parentCategoryName;
-        mCategories = JsonFetcher.sharedFetcher().getSubcategoryWithParenent(mParentCategoryName);
+    public void setParentCategoryID(int parentCategoryID) {
+        mParentCategoryID = parentCategoryID;
+        mSubCategories = JsonFetcher.sharedFetcher().getSubCategoryWithParent(parentCategoryID);
 
     }
 
