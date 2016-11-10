@@ -2,6 +2,7 @@ package kilargo_android.internetics.com.kilargo.fragment;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
+import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -116,6 +118,7 @@ public class MainFragment extends BaseFragment {
                 drawerButtonClicked();
             }
         });
+        increaseControlTouchArea(mBackTextView,40);
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -172,11 +175,15 @@ public class MainFragment extends BaseFragment {
                     for (Integer subCategoryID : product.subcategoryIDList) {
                         String subCategoryName = JsonFetcher.sharedFetcher().getSubCategoryName(subCategoryID);
                         String categoryName = JsonFetcher.sharedFetcher().getMasterCategoryNameFromSubCategoryID(subCategoryID);
-                        HashMap<String,Object> dict = new HashMap<String, Object>();
-                        dict.put("subCategoryName",subCategoryName);
-                        dict.put("categoryName",categoryName);
-                        dict.put("product",product);
-                        mSearchResult.add(dict);
+
+                        if (subCategoryName.length() > 0 && categoryName.length() > 0) {
+
+                            HashMap<String,Object> dict = new HashMap<String, Object>();
+                            dict.put("subCategoryName",subCategoryName);
+                            dict.put("categoryName",categoryName);
+                            dict.put("product",product);
+                            mSearchResult.add(dict);
+                        }
                     }
                 }
 

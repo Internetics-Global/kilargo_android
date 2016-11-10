@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.google.common.base.Strings;
 import com.squareup.picasso.Callback;
@@ -32,7 +33,8 @@ import uk.co.senab.photoview.PhotoViewAttacher;
  */
 public class CarouseActivity extends BaseActivity {
 
-    @Bind(R.id.close_button)  Button mCloseButton;
+    @Bind(R.id.close_button)
+    ImageButton mCloseButton;
     @Bind(R.id.view_pager)  ViewPager mViewPager;
 
     private ArrayList<String> mValidImages = new ArrayList<>();

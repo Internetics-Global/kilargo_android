@@ -363,7 +363,7 @@ public class JsonFetcher {
             }
         }
 
-        return "---";
+        return "";
 
     }
 
@@ -375,7 +375,7 @@ public class JsonFetcher {
             }
         }
 
-        return "---";
+        return "";
 
     }
 
@@ -387,7 +387,7 @@ public class JsonFetcher {
             }
         }
 
-        return "---";
+        return "";
 
     }
 

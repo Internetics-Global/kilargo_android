@@ -6,14 +6,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <Button
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_gravity="right|top"
-        android:id="@+id/close_button"
-        android:padding="10dp"
-        android:layout_margin="15dp"
-        android:background="@drawable/close"/>
+
 
     <kilargo_android.internetics.com.kilargo.widget.HackyViewPager
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -23,5 +16,14 @@
         android:layout_width="match_parent"
         android:scrollbars="horizontal"
         android:layout_height="match_parent" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|top"
+        android:id="@+id/close_button"
+        android:padding="20dp"
+        android:background="@null"
+        android:src="@drawable/close"/>
 
 </kilargo_android.internetics.com.kilargo.widget.BaseFrameLayout>

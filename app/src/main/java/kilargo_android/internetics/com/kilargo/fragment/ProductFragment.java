@@ -192,11 +192,15 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
                     for (Integer subCategoryID : product.subcategoryIDList) {
                         String subCategoryName = JsonFetcher.sharedFetcher().getSubCategoryName(subCategoryID);
                         String categoryName = JsonFetcher.sharedFetcher().getMasterCategoryNameFromSubCategoryID(subCategoryID);
-                        HashMap<String,Object> dict = new HashMap<String, Object>();
-                        dict.put("subCategoryName",subCategoryName);
-                        dict.put("categoryName",categoryName);
-                        dict.put("product",product);
-                        mSearchResult.add(dict);
+
+                        if (subCategoryName.length() > 0 && categoryName.length() > 0) {
+
+                            HashMap<String,Object> dict = new HashMap<String, Object>();
+                            dict.put("subCategoryName",subCategoryName);
+                            dict.put("categoryName",categoryName);
+                            dict.put("product",product);
+                            mSearchResult.add(dict);
+                        }
                     }
                 }
 
