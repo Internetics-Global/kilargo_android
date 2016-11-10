@@ -16,8 +16,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="22dp"
-            android:paddingLeft="10dp"
+            android:layout_height="wrap_content"
             android:paddingRight="10dp"
             android:layout_marginLeft="@dimen/head_view_icon_margin"
             android:layout_marginTop="@dimen/head_view_icon_margin"
@@ -26,21 +25,23 @@
             android:text="Back"
             android:textSize="16sp"
             android:textColor="@android:color/white"
-            android:gravity="left|center_vertical"
+            android:gravity="left|top"
             android:drawableLeft="@drawable/back_arrow"
             android:id="@+id/back_textview"/>
 
-        <Button
+        <ImageButton
             android:id="@+id/refresh_button"
             android:visibility="visible"
-            android:layout_width="18dp"
-            android:layout_height="22dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:layout_gravity="right"
-            android:background="@drawable/refresh"
-            android:layout_marginRight="@dimen/head_view_icon_margin"
-            android:layout_marginTop="@dimen/head_view_icon_margin"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:paddingRight="@dimen/head_view_icon_margin"
+            android:paddingTop="@dimen/head_view_icon_margin"
+            android:paddingBottom="30dp"
+            android:layout_gravity="right|top"
+            android:background="@null"
+            android:src="@drawable/refresh"
+            />
 
     </FrameLayout>
 

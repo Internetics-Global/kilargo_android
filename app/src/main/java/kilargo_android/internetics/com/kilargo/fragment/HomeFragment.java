@@ -24,7 +24,7 @@ public class HomeFragment extends BaseFragment  {
 
     @Bind(R.id.back_textview)      TextView    mBackTextView;
 
-    @Bind(R.id.refresh_button)      Button     mRefreshButton;
+    @Bind(R.id.refresh_button)     ImageButton     mRefreshButton;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

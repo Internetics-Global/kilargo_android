@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -52,7 +53,7 @@ public class MainFragment extends BaseFragment {
 
     @Bind(R.id.search_view)         SearchView mSearchView;
     @Bind(R.id.listview)            ListView   mListView;
-    @Bind(R.id.refresh_button)      Button     mRefreshButton;
+    @Bind(R.id.refresh_button)      ImageButton mRefreshButton;
     @Bind(R.id.swipe_refresh_layout)SwipeRefreshLayout  mSwipeRefreshLayout;
 
     @Bind(R.id.back_textview)    TextView mBackTextView;
@@ -105,7 +106,7 @@ public class MainFragment extends BaseFragment {
                 refreshButtonClicked();
             }
         });
-        increaseControlTouchArea(mRefreshButton,40);
+//        increaseControlTouchArea(mRefreshButton,40);
 
         mBackTextView.setVisibility(View.VISIBLE);
         mBackTextView.setText("");

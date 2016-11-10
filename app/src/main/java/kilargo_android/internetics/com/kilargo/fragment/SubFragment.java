@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -41,7 +42,7 @@ public class SubFragment extends BaseFragment {
 
     @Bind(R.id.search_view)  SearchView mSearchView;
     @Bind(R.id.listview)     ListView   mListView;
-    @Bind(R.id.refresh_button) Button   mRefreshButton;
+    @Bind(R.id.refresh_button) ImageButton mRefreshButton;
     @Bind(R.id.back_textview)TextView mBackTextView;
 
     private KKSubCategoryListAdapter mAdapter;

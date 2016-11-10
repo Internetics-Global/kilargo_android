@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,7 +25,7 @@ public class MoreFragment extends BaseFragment {
     @Bind(R.id.button_setting_about)                     Button         mAboutButton;
     @Bind(R.id.version_info)                             TextView       mVersionTextView;
     @Bind(R.id.back_textview)                            TextView       mNaviBarBackTextView;
-    @Bind(R.id.refresh_button)                           Button         mRefreshButton;
+    @Bind(R.id.refresh_button)                           ImageButton    mRefreshButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

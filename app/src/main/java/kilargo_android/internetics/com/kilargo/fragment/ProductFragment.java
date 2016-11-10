@@ -47,7 +47,7 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
 
     @Bind(R.id.search_view)                   SearchView mSearchView;
     @Bind(R.id.viewpager)                     ViewPager mViewPager;
-    @Bind(R.id.refresh_button)                Button mRefreshButton;
+    @Bind(R.id.refresh_button)                ImageButton mRefreshButton;
     @Bind(R.id.product_info_imagebutton)         ImageButton     mProductInfoButton;
     @Bind(R.id.product_installation_imagebutton) ImageButton     mProductInstallationButton;
 
