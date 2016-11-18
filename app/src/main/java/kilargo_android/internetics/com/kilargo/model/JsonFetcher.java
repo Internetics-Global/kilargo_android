@@ -347,7 +347,8 @@ public class JsonFetcher {
         Iterable<Product> iterableProducts = Iterables.filter(mProducts, new Predicate<Product>() {
             @Override
             public boolean apply(Product input) {
-                if (input.mProductName.toLowerCase().contains( name.toLowerCase())){
+                if ((input.mProductName.toLowerCase().contains( name.toLowerCase())) ||
+                        (input.mSystemNumber.toLowerCase().contains( name.toLowerCase()))){
                     return true;
                 } else {
                     return false;
