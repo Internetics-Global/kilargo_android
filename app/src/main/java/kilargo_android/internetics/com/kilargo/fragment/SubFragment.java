@@ -157,16 +157,26 @@ public class SubFragment extends BaseFragment {
                 for (Product product : rawSearchResult) {
 
                     for (Integer subCategoryID : product.subcategoryIDList) {
+
                         String subCategoryName = JsonFetcher.sharedFetcher().getSubCategoryName(subCategoryID);
-                        String categoryName = JsonFetcher.sharedFetcher().getMasterCategoryNameFromSubCategoryID(subCategoryID);
 
-                        if (subCategoryName.length() > 0 && categoryName.length() > 0) {
+                        for (Integer categoryID: product.categoryIDList) {
 
-                            HashMap<String,Object> dict = new HashMap<String, Object>();
-                            dict.put("subCategoryName",subCategoryName);
-                            dict.put("categoryName",categoryName);
-                            dict.put("product",product);
-                            mSearchResult.add(dict);
+                            boolean isParentChildRelationship = JsonFetcher.sharedFetcher().isParentChildRelationship(categoryID,subCategoryID);
+
+                            if (isParentChildRelationship) {
+
+                                String categoryName = JsonFetcher.sharedFetcher().getCategoryName(categoryID);
+
+                                if (subCategoryName.length() > 0 && categoryName.length() > 0) {
+
+                                    HashMap<String,Object> dict = new HashMap<String, Object>();
+                                    dict.put("subCategoryName",subCategoryName);
+                                    dict.put("categoryName",categoryName);
+                                    dict.put("product",product);
+                                    mSearchResult.add(dict);
+                                }
+                            }
                         }
                     }
                 }
@@ -260,7 +270,7 @@ public class SubFragment extends BaseFragment {
         SubCategory selectedSubCategory = mSubCategories.get(i);
 
         ProductFragment newFragment = new ProductFragment();
-        List<Product> products = JsonFetcher.sharedFetcher().getProducts(selectedSubCategory.masterCategoryID,selectedSubCategory.subcategoryID);
+        List<Product> products = JsonFetcher.sharedFetcher().getProducts(mParentCategoryID,selectedSubCategory.subcategoryID);
         newFragment.setProductList(products);
 
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -302,7 +312,7 @@ public class SubFragment extends BaseFragment {
 
     public void setParentCategoryID(int parentCategoryID) {
         mParentCategoryID = parentCategoryID;
-        mSubCategories = JsonFetcher.sharedFetcher().getSubCategoryWithParent(parentCategoryID);
+        mSubCategories = JsonFetcher.sharedFetcher().getSubCategoryWithParentID(parentCategoryID);
 
     }
 

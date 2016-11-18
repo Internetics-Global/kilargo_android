@@ -20,6 +20,7 @@ import com.squareup.moshi.Types;
 import org.json.JSONArray;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -198,6 +199,7 @@ public class JsonFetcher {
     private boolean parseSubCategoriesJson(String jsonStr) {
 
         Moshi moshi = new Moshi.Builder()
+                .add(new String2ArrayAdapter())
                 .add(new String2IntAdapter())
                 .build();
 
@@ -297,13 +299,19 @@ public class JsonFetcher {
     }
 
 
-    public List<SubCategory> getSubCategoryWithParent(final int categoryID) {
+    public List<SubCategory> getSubCategoryWithParentID(final int categoryID) {
 
         ArrayList<SubCategory> filtedSubCategories = new ArrayList<>();
         for (SubCategory item: mSubCategories) {
-            if (item.masterCategoryID == (categoryID)) {
-                filtedSubCategories.add(item);
+
+            Integer[] IDs = item.masterCategoryID;
+            for (int i = 0; i< IDs.length; i++) {
+                if (IDs[i] == (categoryID)) {
+                    filtedSubCategories.add(item);
+                }
             }
+
+
         }
 
         return filtedSubCategories;
@@ -367,6 +375,22 @@ public class JsonFetcher {
 
     }
 
+    public boolean isParentChildRelationship(@NonNull int parentID, @NonNull int childID) {
+
+        for (SubCategory item: mSubCategories) {
+            if (item.subcategoryID == childID) {
+                Integer[] IDs = item.masterCategoryID;
+                for (int i = 0; i< IDs.length; i++) {
+                    if (IDs[i] == parentID) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
     public String getSubCategoryName(@NonNull  int subCategoryID) {
 
         for (SubCategory item : mSubCategories) {
@@ -379,15 +403,24 @@ public class JsonFetcher {
 
     }
 
-    public String getMasterCategoryNameFromSubCategoryID(@NonNull int subCategoryID) {
+    @Deprecated
+    //never use this
+    public ArrayList<String> getMasterCategoryNameFromSubCategoryID(@NonNull int subCategoryID) {
+
+        ArrayList<String> list = new ArrayList<>();
 
         for (SubCategory item : mSubCategories) {
             if (item.subcategoryID == (subCategoryID)) {
-                return getCategoryName(item.masterCategoryID);
+
+                Integer[] IDs = item.masterCategoryID;
+                for (int i= 0; i<IDs.length;i++) {
+                    list.add(getCategoryName(IDs[i]));
+                }
+
             }
         }
 
-        return "";
+        return list;
 
     }
 
