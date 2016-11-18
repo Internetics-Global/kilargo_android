@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -462,22 +463,62 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
 
         Product product = mProductList.get(mCurrentPage);
 
+        mProductInfoScrollView.fullScroll(View.FOCUS_UP);
         mProductInfoScrollView.removeAllViews();
+
 
         LinearLayout ll = new LinearLayout(getActivity());
         LinearLayout.LayoutParams layoutParams =new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         ll.setLayoutParams(layoutParams);
+        int dp5 = (int) UIHelper.convertDpToPixel(5);
+        ll.setPadding(dp5,dp5,dp5,dp5*2);
         ll.setOrientation(LinearLayout.VERTICAL);
         mProductInfoScrollView.addView(ll);
 
-        View item = LayoutInflater.from(getActivity()).inflate(R.layout.product_installation_dialog_item, null);
-//        TextView summaryTextView = (TextView) item.findViewById(R.id.summary_textview);
-        TextView detailTextView = (TextView) item.findViewById(R.id.detail_textview);
 
-        //summaryTextView.setText(product.installationInstructionTitle);
-        detailTextView.setText(product.installationInstructionBody);
 
-        ll.addView(item);
+        for(int i = 0; i < 5; i++)
+        {
+
+            View item = LayoutInflater.from(getActivity()).inflate(R.layout.product_installation_dialog_item, null);
+            TextView detailTextView = (TextView) item.findViewById(R.id.detail_textview);
+
+            switch (i) {
+                case 0: {
+                    detailTextView.setText("Installation Introductions");
+                    detailTextView.setTextColor(Color.rgb(69,97,55));
+                    detailTextView.setTypeface(null, Typeface.BOLD);
+                    break;
+                }
+                case 1: {
+                    detailTextView.setText(product.installationInstructionTitle);
+                    detailTextView.setTextColor(Color.rgb(69,97,55));
+                    detailTextView.setTypeface(null, Typeface.NORMAL);
+                    break;
+                }
+                case 2: {
+                    detailTextView.setText(product.installationInstructionBody);
+                    detailTextView.setTextColor(Color.BLACK);
+                    detailTextView.setTypeface(null, Typeface.NORMAL);
+                    break;
+                }
+                case 3: {
+                    detailTextView.setText("\nNotes");
+                    detailTextView.setTextColor(Color.rgb(69,97,55));
+                    detailTextView.setTypeface(null, Typeface.NORMAL);
+                    break;
+                }
+                case 4: {
+                    detailTextView.setText(product.mNotes);
+                    detailTextView.setTextColor(Color.BLACK);
+                    detailTextView.setTypeface(null, Typeface.NORMAL);
+                    break;
+                }
+            }
+
+            ll.addView(item);
+
+        }
 
     }
 
@@ -485,21 +526,25 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
 
         Product product = mProductList.get(mCurrentPage);
 
+        mProductInfoScrollView.fullScroll(View.FOCUS_UP);
         mProductInfoScrollView.removeAllViews();
+
 
         LinearLayout ll = new LinearLayout(getActivity());
         LinearLayout.LayoutParams layoutParams =new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         ll.setLayoutParams(layoutParams);
         int dp5 = (int) UIHelper.convertDpToPixel(5);
-        ll.setPadding(dp5,dp5*2,dp5,dp5*2);
+        ll.setPadding(dp5,dp5,dp5,dp5*2);
         ll.setOrientation(LinearLayout.VERTICAL);
         mProductInfoScrollView.addView(ll);
 
-        for(int i = 0; i < 3; i++)
+        for(int i = 0; i < 6; i++)
         {
             View item = LayoutInflater.from(getActivity()).inflate(R.layout.product_info_dialog_item, null);
             TextView summaryTextView = (TextView) item.findViewById(R.id.summary_textview);
             TextView detailTextView = (TextView) item.findViewById(R.id.detail_textview);
+
+            item.setBackgroundColor(Color.TRANSPARENT);
 
             switch (i) {
                 case 0: {
@@ -513,15 +558,31 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
                     break;
                 }
                 case 2: {
-                    summaryTextView.setText("Maximum size shitttttttttterwerwerwerwerwerewrwerewrewrwerewrweerew");
+                    summaryTextView.setText("Maximum size");
                     detailTextView.setText(product.mMaxSize);
+                    break;
+                }
+                case 3: {
+                    summaryTextView.setText("FRL");
+                    detailTextView.setText(product.mFRL);
+                    break;
+                }
+                case 4: {
+                    summaryTextView.setText("Test Reference No.");
+                    detailTextView.setText(product.mTestReferenceNumber);
+                    break;
+                }
+                case 5: {
+                    summaryTextView.setText("System No.");
+                    detailTextView.setText(product.mSystemNumber);
+                    item.setBackgroundColor(Color.rgb(80,114,123));
                     break;
                 }
             }
 
             ll.addView(item);
 
-            if (i < 2) {
+            if (i < 5) {
                 View separator = new View(getActivity());
                 layoutParams =new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
                 layoutParams.setMargins(dp5 *2,dp5,dp5,dp5 *2);
