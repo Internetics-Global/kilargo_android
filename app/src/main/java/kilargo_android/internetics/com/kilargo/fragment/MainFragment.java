@@ -147,8 +147,8 @@ public class MainFragment extends BaseFragment {
             @Override
             public void onFocusChange(View view, boolean b) {
 
-                if (b && Global.lastSearchKeyword.length() > 0) {
-                    search(Global.lastSearchKeyword);
+                if (b && mSearchView.getQuery() != null && mSearchView.getQuery().length() > 0) {
+                    search(mSearchView.getQuery().toString());
                 }
 
             }
