@@ -145,7 +145,7 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
         });
 
         if (mProductList != null && mProductList.size()>0) {
-            mProductNameTextView.setText(mProductList.get(0).mProductName);
+            mProductNameTextView.setText(mProductList.get(0).mProductName + " - " + mProductList.get(0).mSystemNumber);
         }
 
     }
@@ -373,7 +373,7 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
 
         mCurrentPage = position;
 
-        this.mProductNameTextView.setText(mProductList.get(position).mProductName);
+        this.mProductNameTextView.setText(mProductList.get(position).mProductName + " - " + mProductList.get(position).mSystemNumber);
 
         updatePagerArrowsVisiblity(position);
 
