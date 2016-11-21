@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 
 import com.google.common.base.Strings;
 import com.squareup.picasso.Callback;
@@ -97,7 +99,13 @@ public class CarouseActivity extends BaseActivity {
 
         @Override
         public View instantiateItem(ViewGroup container, int position) {
-            PhotoView photoView = new PhotoView(container.getContext());
+
+            View view = LayoutInflater.from(CarouseActivity.this).inflate(R.layout.carouse_item,container, false);
+            container.addView(view);
+
+            final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.spinner_indicator);
+            final PhotoView   photoView =   (PhotoView) view.findViewById(R.id.photo_view);
+
             final PhotoViewAttacher attacher = new PhotoViewAttacher(photoView);
             String url = Global.imageBaseURL + mValidImages.get(position);
             if (url.contains(".png") || url.contains(".jpg") || url.contains(".jpeg")) {
@@ -111,18 +119,17 @@ public class CarouseActivity extends BaseActivity {
                     .into(photoView, new Callback() {
                         @Override
                         public void onSuccess() {
+                            progressBar.setVisibility(View.GONE);
                             attacher.update();
                         }
 
                         @Override
                         public void onError() {
+                            progressBar.setVisibility(View.GONE);
                         }
                     });
 
-            // Now just add PhotoView to ViewPager and return it
-            container.addView(photoView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-
-            return photoView;
+            return view;
         }
 
         @Override

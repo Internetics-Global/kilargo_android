@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -58,6 +60,8 @@ public class KKImageScrollAdapter extends PagerAdapter {
         View view = LayoutInflater.from(mContext).inflate(R.layout.product_item,container, false);
         container.addView(view);
 
+        final ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.spinner_indicator);
+
         Product product = mProductList.get(position);
 
         String url = Global.imageBaseURL + product.productImage;
@@ -70,8 +74,19 @@ public class KKImageScrollAdapter extends PagerAdapter {
         Picasso.with(mContext)
                 .load(url)
                 .fit().centerInside()
-                .placeholder(R.drawable.placeholder)
-                .into(productImageView);
+                .into(productImageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        progressBar.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError() {
+
+                        progressBar.setVisibility(View.GONE);
+
+                    }
+                });
 
         productImageView.setOnClickListener(new View.OnClickListener() {
             @Override
