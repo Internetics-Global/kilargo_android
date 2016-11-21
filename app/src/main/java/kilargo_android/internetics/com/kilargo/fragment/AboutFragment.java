@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -18,6 +19,7 @@ import kilargo_android.internetics.com.kilargo.R;
 public class AboutFragment extends BaseFragment {
 
     @Bind(R.id.back_textview)    TextView mBackTextView;
+    @Bind(R.id.refresh_button)   ImageButton mRefreshButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,6 +47,8 @@ public class AboutFragment extends BaseFragment {
                 getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
         });
+
+        mRefreshButton.setVisibility(View.INVISIBLE);
 
     }
 
