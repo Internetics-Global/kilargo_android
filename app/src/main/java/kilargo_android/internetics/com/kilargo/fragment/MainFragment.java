@@ -132,7 +132,7 @@ public class MainFragment extends BaseFragment {
     }
 
 
-    private ArrayList<HashMap<String,Object>> mSearchResult;
+    private List<Product> mSearchResult;
     private PopupWindow   mSearchResultPopupWindow;
     private void setupSearch() {
 
@@ -156,9 +156,9 @@ public class MainFragment extends BaseFragment {
                     mSearchResultPopupWindow = null;
                 }
 
-                List<Product> rawSearchResult = JsonFetcher.sharedFetcher().getProductsWithAnyKeyword(s);
+                mSearchResult = JsonFetcher.sharedFetcher().getProductsWithAnyKeyword(s);
 
-                if (rawSearchResult.size() ==0) {
+                if (mSearchResult.size() ==0) {
                     return false;
                 }
 
@@ -170,36 +170,8 @@ public class MainFragment extends BaseFragment {
 
                 scrollViewContentLL.removeAllViews();
 
-                mSearchResult = new ArrayList<>();
-                for (Product product : rawSearchResult) {
-
-                    for (Integer subCategoryID : product.subcategoryIDList) {
-
-                        String subCategoryName = JsonFetcher.sharedFetcher().getSubCategoryName(subCategoryID);
-
-                        for (Integer categoryID: product.categoryIDList) {
-
-                            boolean isParentChildRelationship = JsonFetcher.sharedFetcher().isParentChildRelationship(categoryID,subCategoryID);
-
-                            if (isParentChildRelationship) {
-
-                                String categoryName = JsonFetcher.sharedFetcher().getCategoryName(categoryID);
-
-                                if (subCategoryName.length() > 0 && categoryName.length() > 0) {
-
-                                    HashMap<String,Object> dict = new HashMap<String, Object>();
-                                    dict.put("subCategoryName",subCategoryName);
-                                    dict.put("categoryName",categoryName);
-                                    dict.put("product",product);
-                                    mSearchResult.add(dict);
-                                }
-                            }
-                        }
-                    }
-                }
-
                 int i = 0;
-                for (HashMap<String,Object> item:mSearchResult) {
+                for (Product item:mSearchResult) {
 
                     final View searchResultItem = LayoutInflater.from(getActivity()).inflate(R.layout.search_result_item, null);
                     searchResultItem.setTag(String.format("%d",i));
@@ -212,7 +184,7 @@ public class MainFragment extends BaseFragment {
 
                     TextView summaryTextView = (TextView) searchResultItem.findViewById(R.id.summary_textview);
 
-                    String text = String.format("%s->%s",item.get("categoryName"),item.get("subCategoryName"));
+                    String text = String.format("%s(System number = %s)",item.mProductName,item.mSystemNumber);
                     summaryTextView.setText(text);
 
                     scrollViewContentLL.addView(searchResultItem);
@@ -255,7 +227,7 @@ public class MainFragment extends BaseFragment {
 
         int index = Integer.parseInt((String) view.getTag());
 
-        Product selectedProduct = (Product) mSearchResult.get(index).get("product");
+        Product selectedProduct = mSearchResult.get(index);
 
 
         mSearchView.setQuery("",false);
