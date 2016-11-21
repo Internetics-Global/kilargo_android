@@ -9,4 +9,6 @@ public class Global {
     public static final String productFeedURL      = "http://www.internetics.net.au/kgo/app/manage/get_products_data?X-API-KEY=A109764532X";
     public static final String categoryFeedURL      = "http://www.internetics.net.au/kgo/app/manage/get_categories_data?X-API-KEY=A109764532X";
     public static final String subCategoryFeedURL      = "http://www.internetics.net.au/kgo/app/manage/get_subcategories_data?X-API-KEY=A109764532X";
+
+    public static       String lastSearchKeyword = "";
 }

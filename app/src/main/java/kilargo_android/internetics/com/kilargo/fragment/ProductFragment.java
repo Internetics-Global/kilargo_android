@@ -39,6 +39,7 @@ import kilargo_android.internetics.com.kilargo.activity.CarouseActivity;
 import kilargo_android.internetics.com.kilargo.adapter.KKImageScrollAdapter;
 import kilargo_android.internetics.com.kilargo.model.JsonFetcher;
 import kilargo_android.internetics.com.kilargo.model.Product;
+import kilargo_android.internetics.com.kilargo.util.Global;
 import kilargo_android.internetics.com.kilargo.util.UIHelper;
 
 /**
@@ -153,6 +154,24 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
     private PopupWindow mSearchResultPopupWindow;
     private void setupSearch() {
 
+        mSearchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSearchView.setIconified(false);
+            }
+        });
+
+        mSearchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+
+                if (b && Global.lastSearchKeyword.length() > 0) {
+                    search(Global.lastSearchKeyword);
+                }
+
+            }
+        });
+
         mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
@@ -166,77 +185,82 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
             }
 
             @Override
-            public boolean onQueryTextChange(String s) {
+            public boolean onQueryTextChange(final String s) {
 
-                if (mSearchResultPopupWindow != null) {
-                    mSearchResultPopupWindow.dismiss();
-                    mSearchResultPopupWindow = null;
-                }
-
-                mSearchResult = JsonFetcher.sharedFetcher().getProductsWithAnyKeyword(s);
-
-                if (mSearchResult.size() ==0) {
-                    return false;
-                }
-
-                LayoutInflater layoutInflater = (LayoutInflater)getActivity()
-                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View popupView = layoutInflater.inflate(R.layout.search_result_popup, null);
-
-                LinearLayout scrollViewContentLL = (LinearLayout) popupView.findViewById(R.id.search_result_scrollview_content_ll);
-
-                scrollViewContentLL.removeAllViews();
-
-                int i = 0;
-                for (Product item:mSearchResult) {
-
-                    final View searchResultItem = LayoutInflater.from(getActivity()).inflate(R.layout.search_result_item, null);
-                    searchResultItem.setTag(String.format("%d",i));
-                    searchResultItem.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            searchResultItemClicked(view);
-                        }
-                    });
-
-                    TextView summaryTextView = (TextView) searchResultItem.findViewById(R.id.summary_textview);
-
-                    String text = String.format("%s(System number = %s)",item.mProductName,item.mSystemNumber);
-                    summaryTextView.setText(text);
-
-                    scrollViewContentLL.addView(searchResultItem);
-
-                    if (i < mSearchResult.size() -1) {
-                        int dp5 = (int) UIHelper.convertDpToPixel(5);
-                        View separator = new View(getActivity());
-                        LinearLayout.LayoutParams layoutParams =new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
-                        layoutParams.setMargins(dp5 *2,dp5,dp5,dp5 *2);
-                        separator.setBackgroundColor(Color.DKGRAY);
-                        separator.setLayoutParams(layoutParams);
-                        scrollViewContentLL.addView(separator);
-                    }
-
-                    i++;
-                }
-
-                if (mSearchResultPopupWindow != null && mSearchResultPopupWindow.isShowing() == false) {
-                    mSearchResultPopupWindow.dismiss();
-
-                }
-                mSearchResultPopupWindow = null;
-
-                mSearchResultPopupWindow = new PopupWindow(popupView,mSearchView.getWidth(), (int) UIHelper.convertDpToPixel(150),true);
-                mSearchResultPopupWindow.setFocusable(false);
-                mSearchResultPopupWindow.setOutsideTouchable(true);
-
-                if (mSearchResultPopupWindow.isShowing() == false) {
-                    mSearchResultPopupWindow.showAsDropDown(mSearchView,0,10);
-                }
-
+                search(s);
 
                 return false;
             }
         });
+    }
+
+    private void search(final String s) {
+
+        if (mSearchResultPopupWindow != null) {
+            mSearchResultPopupWindow.dismiss();
+            mSearchResultPopupWindow = null;
+        }
+
+        mSearchResult = JsonFetcher.sharedFetcher().getProductsWithAnyKeyword(s);
+
+        if (mSearchResult.size() ==0) {
+            return;
+        }
+
+        LayoutInflater layoutInflater = (LayoutInflater)getActivity()
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popupView = layoutInflater.inflate(R.layout.search_result_popup, null);
+
+        LinearLayout scrollViewContentLL = (LinearLayout) popupView.findViewById(R.id.search_result_scrollview_content_ll);
+
+        scrollViewContentLL.removeAllViews();
+
+        int i = 0;
+        for (Product item:mSearchResult) {
+
+            final View searchResultItem = LayoutInflater.from(getActivity()).inflate(R.layout.search_result_item, null);
+            searchResultItem.setTag(String.format("%d",i));
+            searchResultItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Global.lastSearchKeyword = s;
+                    searchResultItemClicked(view);
+                }
+            });
+
+            TextView summaryTextView = (TextView) searchResultItem.findViewById(R.id.summary_textview);
+
+            String text = String.format("%s(System number = %s)",item.mProductName,item.mSystemNumber);
+            summaryTextView.setText(text);
+
+            scrollViewContentLL.addView(searchResultItem);
+
+            if (i < mSearchResult.size() -1) {
+                int dp5 = (int) UIHelper.convertDpToPixel(5);
+                View separator = new View(getActivity());
+                LinearLayout.LayoutParams layoutParams =new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
+                layoutParams.setMargins(dp5 *2,dp5,dp5,dp5 *2);
+                separator.setBackgroundColor(Color.DKGRAY);
+                separator.setLayoutParams(layoutParams);
+                scrollViewContentLL.addView(separator);
+            }
+
+            i++;
+        }
+
+        if (mSearchResultPopupWindow != null && mSearchResultPopupWindow.isShowing() == false) {
+            mSearchResultPopupWindow.dismiss();
+
+        }
+        mSearchResultPopupWindow = null;
+
+        mSearchResultPopupWindow = new PopupWindow(popupView,mSearchView.getWidth(), (int) UIHelper.convertDpToPixel(150),true);
+        mSearchResultPopupWindow.setFocusable(false);
+        mSearchResultPopupWindow.setOutsideTouchable(true);
+
+        if (mSearchResultPopupWindow.isShowing() == false) {
+            mSearchResultPopupWindow.showAsDropDown(mSearchView,0,10);
+        }
     }
 
     private void searchResultItemClicked(View view) {
@@ -245,7 +269,6 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
 
         Product selectedProduct = mSearchResult.get(index);
 
-        mSearchView.setQuery("",false);
         mSearchView.clearFocus();
         if (mSearchResultPopupWindow != null) {
             mSearchResultPopupWindow.dismiss();
@@ -292,6 +315,9 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
 
         Logger.d("onResume");
 
+        mSearchView.setQuery(Global.lastSearchKeyword,false);
+        mSearchView.clearFocus();
+
 
     }
 
@@ -320,6 +346,11 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
         super.onStop();
 
         Logger.d("onStop");
+
+        mSearchView.clearFocus();
+        if (mSearchResultPopupWindow != null) {
+            mSearchResultPopupWindow.dismiss();
+        }
 
     }
 
