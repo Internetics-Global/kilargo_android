@@ -44,12 +44,6 @@
                 ></View>
 
 
-            <Button
-                android:id="@+id/button_setting_setting"
-                style="@style/button_setting_list_item"
-                android:text="Settings"
-                />
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

@@ -21,7 +21,6 @@ import kilargo_android.internetics.com.kilargo.activity.MainActivity;
 public class MoreFragment extends BaseFragment {
 
     @Bind(R.id.button_setting_products)                  Button         mProductsButton;
-    @Bind(R.id.button_setting_setting)                   Button         mSettingButton;
     @Bind(R.id.button_setting_about)                     Button         mAboutButton;
     @Bind(R.id.version_info)                             TextView       mVersionTextView;
     @Bind(R.id.back_textview)                            TextView       mNaviBarBackTextView;
@@ -43,14 +42,6 @@ public class MoreFragment extends BaseFragment {
 
         mRefreshButton.setVisibility(View.INVISIBLE
         );
-
-        mSettingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity)getActivity()).settingButtonClicked();
-
-            }
-        });
 
 
         mProductsButton.setOnClickListener(new View.OnClickListener() {
