@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import bolts.Continuation;
 import bolts.Task;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -375,14 +376,10 @@ public class MainFragment extends BaseFragment {
 
         }
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-
+        Task.delay(500).continueWith(new Continuation<Void, Object>() {
             @Override
-            public void run() {
+            public String then(Task<Void> task) throws Exception {
 
-
-                String url = Global.productFeedURL;
                 JsonFetcher.sharedFetcher().fetchAllFeed().setOnCompletionHandler(new JsonFetcher.OnCompletionHandler() {
                     @Override
                     public void responseJSON(final boolean result, String errorMessage) {
@@ -419,9 +416,9 @@ public class MainFragment extends BaseFragment {
                     }
                 });
 
+                return null;
             }
-
-        }, 1000); // 5000ms delay
+        },Task.BACKGROUND_EXECUTOR);
     }
 
 
