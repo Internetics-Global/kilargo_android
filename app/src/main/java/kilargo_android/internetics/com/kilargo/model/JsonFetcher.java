@@ -3,6 +3,8 @@ package kilargo_android.internetics.com.kilargo.model;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -52,7 +54,12 @@ public class JsonFetcher {
 
     private OnCompletionHandler onCompletionHandler;
 
-    private volatile static JsonFetcher instance;
+    private volatile  static JsonFetcher instance;
+
+    private static           RequestQueue mRequestQueue;
+
+    private static final int TIMEOUT_MILLISECOND = 10000;
+    private static final int RETRY_TIMES         = DefaultRetryPolicy.DEFAULT_MAX_RETRIES;
 
 
     public static JsonFetcher sharedFetcher() {
@@ -76,7 +83,16 @@ public class JsonFetcher {
         mIsError = false;
         mErrorMessage = "";
 
-        RequestQueue requestQueue = Volley.newRequestQueue(AppContext.getAppContext());
+        if (mRequestQueue != null) {
+            mRequestQueue.cancelAll(new RequestQueue.RequestFilter() {
+                @Override
+                public boolean apply(Request<?> request) {
+                    return true;
+                }
+            });
+        }
+
+        mRequestQueue = Volley.newRequestQueue(AppContext.getAppContext());
 
         //products feed
         {
@@ -106,7 +122,13 @@ public class JsonFetcher {
 
                 }
             });
-            requestQueue.add(jsonArrayRequestForProducts);
+
+            jsonArrayRequestForProducts.setRetryPolicy(new DefaultRetryPolicy(
+                    TIMEOUT_MILLISECOND,
+                    RETRY_TIMES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+            mRequestQueue.add(jsonArrayRequestForProducts);
         }
 
         //categories feed
@@ -137,7 +159,11 @@ public class JsonFetcher {
 
                 }
             });
-            requestQueue.add(jsonArrayRequestForCategories);
+            jsonArrayRequestForCategories.setRetryPolicy(new DefaultRetryPolicy(
+                    TIMEOUT_MILLISECOND,
+                    RETRY_TIMES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            mRequestQueue.add(jsonArrayRequestForCategories);
         }
 
         //subcategories feed
@@ -168,7 +194,11 @@ public class JsonFetcher {
 
                 }
             });
-            requestQueue.add(jsonArrayRequestForSubCategories);
+            jsonArrayRequestForSubCategories.setRetryPolicy(new DefaultRetryPolicy(
+                    TIMEOUT_MILLISECOND,
+                    RETRY_TIMES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            mRequestQueue.add(jsonArrayRequestForSubCategories);
         }
 
         Task.callInBackground(new Callable<String>() {

@@ -91,6 +91,10 @@ public class SplashActivity  extends BaseActivity {
             e.printStackTrace();
         }
 
+        Runtime runtime = Runtime.getRuntime();
+        long maxMemory = runtime.maxMemory();
+        Logger.d("heap size(M) = %d",maxMemory/1024/1024);
+
     }
 
 }

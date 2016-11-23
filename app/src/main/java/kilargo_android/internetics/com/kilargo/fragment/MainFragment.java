@@ -376,7 +376,7 @@ public class MainFragment extends BaseFragment {
 
         }
 
-        Task.delay(500).continueWith(new Continuation<Void, Object>() {
+        Task.delay(1000).continueWith(new Continuation<Void, Object>() {
             @Override
             public String then(Task<Void> task) throws Exception {
 
