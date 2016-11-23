@@ -224,7 +224,7 @@ public class MainFragment extends BaseFragment {
                 View separator = new View(getActivity());
                 LinearLayout.LayoutParams layoutParams =new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
                 layoutParams.setMargins(dp5 *2,dp5,dp5,dp5 *2);
-                separator.setBackgroundColor(Color.DKGRAY);
+                separator.setBackgroundColor(Color.LTGRAY);
                 separator.setLayoutParams(layoutParams);
                 scrollViewContentLL.addView(separator);
             }

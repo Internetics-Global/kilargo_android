@@ -578,7 +578,7 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
                 case 5: {
                     summaryTextView.setText("System No.");
                     detailTextView.setText(product.mSystemNumber);
-                    item.setBackgroundColor(Color.rgb(80,114,123));
+                    item.setBackgroundColor(Color.rgb(174,216,229));
                     break;
                 }
             }
@@ -589,7 +589,7 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
                 View separator = new View(getActivity());
                 layoutParams =new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
                 layoutParams.setMargins(dp5 *2,dp5,dp5,dp5 *2);
-                separator.setBackgroundColor(Color.DKGRAY);
+                separator.setBackgroundColor(Color.LTGRAY);
                 separator.setLayoutParams(layoutParams);
                 ll.addView(separator);
             }
