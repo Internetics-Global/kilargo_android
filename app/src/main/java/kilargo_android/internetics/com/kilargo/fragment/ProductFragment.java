@@ -488,7 +488,7 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
 
             switch (i) {
                 case 0: {
-                    detailTextView.setText("Installation Introductions");
+                    detailTextView.setText("Installation Instructions");
                     detailTextView.setTextColor(Color.rgb(69,97,55));
                     detailTextView.setTypeface(null, Typeface.BOLD);
                     break;
