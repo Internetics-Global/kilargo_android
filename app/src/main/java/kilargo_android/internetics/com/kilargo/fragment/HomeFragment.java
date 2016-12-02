@@ -1,5 +1,7 @@
 package kilargo_android.internetics.com.kilargo.fragment;
 
+import android.app.FragmentManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
@@ -19,8 +21,6 @@ import kilargo_android.internetics.com.kilargo.R;
  */
 
 public class HomeFragment extends BaseFragment  {
-
-    @Bind(R.id.button_get_started) ImageButton mGetStartedButton;
 
     @Bind(R.id.back_textview)      TextView    mBackTextView;
 
@@ -47,26 +47,21 @@ public class HomeFragment extends BaseFragment  {
 
     }
 
-    private void setupView(View view) {
+    private void setupView(View baseView) {
 
-        mBackTextView.setVisibility(View.INVISIBLE);
-        mRefreshButton.setVisibility(View.INVISIBLE);
-
-        mGetStartedButton.setOnClickListener(new View.OnClickListener() {
+        mBackTextView.setVisibility(View.VISIBLE);
+        mBackTextView.setText("Back");
+        Drawable img = getResources().getDrawable(R.drawable.back_arrow );
+        img.setBounds( 0, 0, 24, 24 );
+        mBackTextView.setCompoundDrawablesWithIntrinsicBounds( img, null, null, null);
+        mBackTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                MainFragment newFragment = new MainFragment();
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.setCustomAnimations(R.anim.fragment_slide_left_enter,
-                        R.anim.fragment_slide_left_exit,
-                        0,
-                        0);
-                transaction.replace(R.id.fragment_container, newFragment);
-                transaction.addToBackStack("MainFragment" +System.currentTimeMillis());
-                transaction.commit();
+                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             }
         });
+
+        mRefreshButton.setVisibility(View.INVISIBLE);
 
     }
 }

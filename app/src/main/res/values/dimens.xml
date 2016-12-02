@@ -7,7 +7,7 @@
     <dimen name="about_content_width">320dp</dimen>
     <dimen name="about_content_height">800dp</dimen>
     <dimen name="product_info_dialog_scrollview_width">300dp</dimen>
-    <dimen name="product_info_dialog_height">150dp</dimen>
+    <dimen name="product_info_dialog_height">250dp</dimen>
     <dimen name="product_info_dialog_text_size">14sp</dimen>
     <dimen name="head_view_icon_margin">15dp</dimen>
     <dimen name="logo_width">139dp</dimen>

@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,7 +28,6 @@ import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.Bind;
@@ -375,7 +373,7 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
 
         this.mProductNameTextView.setText(mProductList.get(position).mProductName + " - " + mProductList.get(position).mSystemNumber);
 
-        updatePagerArrowsVisiblity(position);
+        updatePagerArrowsVisibility(position);
 
 
     }
@@ -390,7 +388,7 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
 
     }
 
-    private void updatePagerArrowsVisiblity(int position) {
+    private void updatePagerArrowsVisibility(int position) {
 
         if (mProductList == null) {
             return;

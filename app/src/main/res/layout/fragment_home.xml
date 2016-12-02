@@ -28,17 +28,6 @@
             android:src="@drawable/home_whole"
             android:scaleType="fitXY"/>
 
-        
-        <ImageButton
-            android:layout_width="116dp"
-            android:layout_height="31dp"
-            android:id="@+id/button_get_started"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/get_started_button"
-            android:layout_alignParentBottom="true"
-            android:text="Get Started"/>
-
     </RelativeLayout>
 
 </kilargo_android.internetics.com.kilargo.widget.BaseLinearLayout>

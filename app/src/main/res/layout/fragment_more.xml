@@ -33,7 +33,7 @@
             <Button
                 android:id="@+id/button_setting_products"
                 style="@style/button_setting_list_item"
-                android:text="Products"
+                android:text="Products Systems"
                 />
 
             <View
@@ -43,6 +43,19 @@
                 android:background="@android:color/darker_gray"
                 ></View>
 
+
+            <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="12dp"
+            android:background="@android:color/darker_gray"
+            ></View>
+
+            <Button
+                android:id="@+id/button_setting_about"
+                style="@style/button_setting_list_item"
+                android:text="Coming Soon"
+                />
 
             <View
                 android:layout_width="match_parent"
@@ -52,10 +65,11 @@
                 ></View>
 
             <Button
-                android:id="@+id/button_setting_about"
+                android:id="@+id/button_setting_about_app"
                 style="@style/button_setting_list_item"
-                android:text="About"
+                android:text="About The App"
                 />
+
         </LinearLayout>
     </ScrollView>
 

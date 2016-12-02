@@ -53,9 +53,9 @@ public class MainActivity extends BaseActivity implements android.support.v4.app
         ButterKnife.bind(this);
 
         if (savedInstanceState == null) {
-            final android.support.v4.app.Fragment homeFragment = new HomeFragment();
+            final android.support.v4.app.Fragment mainFragment = new MainFragment();
             getSupportFragmentManager().beginTransaction().disallowAddToBackStack()
-                    .add(R.id.fragment_container, homeFragment,"HomeFragment").commit();
+                    .add(R.id.fragment_container, mainFragment,"MainFragment").commit();
 
             final MoreFragment moreFragment = new MoreFragment();
             getSupportFragmentManager().beginTransaction()
@@ -203,6 +203,20 @@ public class MainActivity extends BaseActivity implements android.support.v4.app
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, newFragment);
         transaction.addToBackStack("AboutFragment" + System.currentTimeMillis());
+        transaction.commit();
+
+    }
+
+    public void aboutAppButtonClicked() {
+
+        closeDrawer();
+
+        getSupportFragmentManager().popBackStack("HomeFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        Fragment newFragment = new HomeFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, newFragment);
+        transaction.addToBackStack("HomeFragment" + System.currentTimeMillis());
         transaction.commit();
 
     }
