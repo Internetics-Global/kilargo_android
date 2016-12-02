@@ -85,7 +85,8 @@ public class KKImageScrollAdapter extends PagerAdapter {
 
                         progressBar.setVisibility(View.GONE);
 
-                        productImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_loading_error));
+                        productImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.loading_error));
+                        productImageView.setScaleType(ImageView.ScaleType.CENTER);
 
                     }
                 });

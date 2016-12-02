@@ -318,7 +318,8 @@ public class CarouseActivity extends BaseActivity implements ViewPager.OnPageCha
                         public void onError() {
                             progressBar.setVisibility(View.GONE);
 
-                            photoView.setImageDrawable(getResources().getDrawable(R.drawable.ic_loading_error_white));
+                            photoView.setImageDrawable(getResources().getDrawable(R.drawable.loading_error_white));
+                            photoView.setScaleType(ImageView.ScaleType.CENTER);
                         }
                     });
 
