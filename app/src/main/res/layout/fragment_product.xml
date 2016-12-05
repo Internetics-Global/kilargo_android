@@ -100,7 +100,7 @@
                 android:layout_gravity="bottom|center_horizontal"
                 android:background="@drawable/info_dialog_bg"
                 android:layout_width="@dimen/product_info_dialog_scrollview_width"
-                android:paddingTop="20dp"
+                android:paddingTop="@dimen/popup_top_margin"
                 android:paddingBottom="10dp"
                 android:layout_marginBottom="20dp"
                 android:scrollbars="none"

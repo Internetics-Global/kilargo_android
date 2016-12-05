@@ -1,4 +1,5 @@
 <resources>
     <dimen name="logo_width">180dp</dimen>
     <dimen name="logo_height">62dp</dimen>
+    <dimen name="popup_top_margin">40dp</dimen>
 </resources>

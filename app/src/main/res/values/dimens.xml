@@ -12,4 +12,5 @@
     <dimen name="head_view_icon_margin">15dp</dimen>
     <dimen name="logo_width">139dp</dimen>
     <dimen name="logo_height">48dp</dimen>
+    <dimen name="popup_top_margin">20dp</dimen>
 </resources>
