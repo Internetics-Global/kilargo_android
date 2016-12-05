@@ -165,7 +165,7 @@ public class CarouseActivity extends BaseActivity implements ViewPager.OnPageCha
                 float orientation[] = new float[3];
                 SensorManager.getOrientation(R, orientation);
 
-                //Log.d("ccaa","Gyro position is :" + orientation[0] + "  " + orientation[1] + "  " + orientation[2]);
+               // Log.d("ccaa","Gyro position is :" + orientation[0] + "  " + orientation[1] + "  " + orientation[2]);
                 final double azimut = orientation[0];
 
                 Task.call(new Callable<Object>() {
@@ -184,13 +184,13 @@ public class CarouseActivity extends BaseActivity implements ViewPager.OnPageCha
 
     private void updateContextHelp(double gravityY) {
 
-        if (Math.abs(gravityY) < 0.5 || Math.abs(gravityY) > 2.5) {
+        if ((gravityY < 0.5) && (gravityY >= 0) || gravityY < -2) {
 
             if (mRotationInstructionImageView.getVisibility() == View.VISIBLE) {
                 mRotationInstructionImageView.setVisibility(View.INVISIBLE);
             }
 
-        } else if (Math.abs(gravityY) > 0.8 && Math.abs(gravityY) < 2.2) {
+        } else  {
 
             if (mRotationInstructionImageView.getVisibility() == View.INVISIBLE) {
                 mRotationInstructionImageView.setVisibility(View.VISIBLE);

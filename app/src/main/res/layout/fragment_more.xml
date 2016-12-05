@@ -33,7 +33,7 @@
             <Button
                 android:id="@+id/button_setting_products"
                 style="@style/button_setting_list_item"
-                android:text="Products Systems"
+                android:text="Products systems"
                 />
 
             <View
@@ -54,7 +54,7 @@
             <Button
                 android:id="@+id/button_setting_about"
                 style="@style/button_setting_list_item"
-                android:text="Coming Soon"
+                android:text="Coming soon"
                 />
 
             <View
@@ -67,7 +67,7 @@
             <Button
                 android:id="@+id/button_setting_about_app"
                 style="@style/button_setting_list_item"
-                android:text="About The App"
+                android:text="About the app"
                 />
 
         </LinearLayout>
