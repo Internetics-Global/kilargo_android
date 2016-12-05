@@ -2,6 +2,7 @@ package kilargo_android.internetics.com.kilargo.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -14,8 +15,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -57,10 +60,7 @@ public class CarouseActivity extends BaseActivity implements ViewPager.OnPageCha
 
     private static final String EXTRA_PARCEL = "product";
 
-    private int  mCurrentPage;
-
-    private SensorManager     mSensorManager;
-    private boolean           mIsSensorAvailable;
+    private SensorManager mSensorManager;
 
     public static Intent buildIntent(Context context, Product product) {
         Intent intent = new Intent(context, CarouseActivity.class);
@@ -105,92 +105,60 @@ public class CarouseActivity extends BaseActivity implements ViewPager.OnPageCha
 
     }
 
-    private HandlerThread mSensorThread;
-    private Handler       mSensorHandler;
     private void setupSensor() {
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        Sensor gravitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+        mSensorManager.registerListener(this,gravitySensor,SensorManager.SENSOR_DELAY_NORMAL);
+    }
 
-        Sensor accelSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        Sensor magSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+    private void cleanSensor() {
+        mSensorManager.unregisterListener(this);
 
-        if (accelSensor != null && magSensor != null) {
-
-            mSensorThread = new HandlerThread("sensorThread");
-            mSensorThread.start();
-            mSensorHandler = new Handler(mSensorThread.getLooper());
-            mSensorManager.registerListener(CarouseActivity.this, accelSensor,
-                    SensorManager.SENSOR_DELAY_NORMAL, mSensorHandler);
-            mSensorManager.registerListener(CarouseActivity.this, magSensor,
-                    SensorManager.SENSOR_DELAY_NORMAL, mSensorHandler);
-
-            mIsSensorAvailable = true;
-        } else {
-            mIsSensorAvailable = false;
-        }
     }
 
 
-    private float[] mGravity;
-    private float[] mGeomagnetic;
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
 
-        switch (sensorEvent.sensor.getType()) {
-            case Sensor.TYPE_ORIENTATION: {
-                //roll(event.values[2]); 其中event.values[2]是度单位，需要转换成radius，其余则不需要改变
-                break;
-            }
-            case Sensor.TYPE_ACCELEROMETER: {
-                mGravity = sensorEvent.values;
+        float X = sensorEvent.values[0];
+        float Y = sensorEvent.values[1];
+        float Z = sensorEvent.values[2];
+        Log.d("ccaa","X="+X + " Y=" + Y + " Z=" + Z);
 
-                break;
-            }
-            case Sensor.TYPE_MAGNETIC_FIELD: {
-                mGeomagnetic = sensorEvent.values;
+        updateContextHelp(Y);
 
-                break;
-            }
-            default:{
+    }
 
-            }
+    public int getDeviceDefaultOrientation() {
+
+        WindowManager windowManager =  (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+
+        Configuration config = getResources().getConfiguration();
+
+        int rotation = windowManager.getDefaultDisplay().getRotation();
+
+        if ( ((rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) &&
+                config.orientation == Configuration.ORIENTATION_LANDSCAPE)
+                || ((rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) &&
+                config.orientation == Configuration.ORIENTATION_PORTRAIT)) {
+            return Configuration.ORIENTATION_LANDSCAPE;
+        } else {
+            return Configuration.ORIENTATION_PORTRAIT;
         }
-
-        if (mGravity != null && mGeomagnetic != null) {
-
-            float R[] = new float[9];
-            float I[] = new float[9];
-            boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
-            if (success) {
-                float orientation[] = new float[3];
-                SensorManager.getOrientation(R, orientation);
-
-               // Log.d("ccaa","Gyro position is :" + orientation[0] + "  " + orientation[1] + "  " + orientation[2]);
-                final double azimut = orientation[0];
-
-                Task.call(new Callable<Object>() {
-                    @Override
-                    public String call() throws Exception {
-
-                        updateContextHelp(azimut);
-
-                        return null;
-                    }
-                },Task.UI_THREAD_EXECUTOR);
-            }
-        }
-
     }
 
     private void updateContextHelp(double gravityY) {
 
-        if ((gravityY < 0.5) && (gravityY >= 0) || gravityY < -2) {
+        //Log.d("ccaa","position is " + getDeviceDefaultOrientation());
+
+        if (Math.abs(gravityY) < 2) {
 
             if (mRotationInstructionImageView.getVisibility() == View.VISIBLE) {
                 mRotationInstructionImageView.setVisibility(View.INVISIBLE);
             }
 
-        } else  {
+        } else if (Math.abs(gravityY) > 3)  {
 
             if (mRotationInstructionImageView.getVisibility() == View.INVISIBLE) {
                 mRotationInstructionImageView.setVisibility(View.VISIBLE);
@@ -220,18 +188,7 @@ public class CarouseActivity extends BaseActivity implements ViewPager.OnPageCha
     protected void onStop() {
         super.onStop();
 
-        if (mIsSensorAvailable) {
-            mSensorManager.unregisterListener(CarouseActivity.this);
-        }
-
-        if (mSensorThread != null) {
-            mSensorThread.quit();
-        }
-
-        if (mSensorHandler != null) {
-            mSensorHandler.removeCallbacksAndMessages(null);
-            mSensorHandler = null;
-        }
+        cleanSensor();
     }
 
     @Override
@@ -263,8 +220,6 @@ public class CarouseActivity extends BaseActivity implements ViewPager.OnPageCha
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-        mCurrentPage = position;
         updatePagerArrowsVisibility(position);
 
     }
