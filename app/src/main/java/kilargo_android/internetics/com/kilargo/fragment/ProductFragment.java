@@ -108,6 +108,11 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
         mProductInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (mProductList == null || mProductList.size() == 0) {
+                    return;
+                }
+
                 switchProductContentVisibility();
                 updateProductInfoContent();
             }
@@ -116,6 +121,11 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
         mProductInstallationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (mProductList == null || mProductList.size() == 0) {
+                    return;
+                }
+
                 switchProductContentVisibility();
                 updateProductInstallationContent();
             }
@@ -316,6 +326,8 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
         mSearchView.setQuery(Global.lastSearchKeyword,false);
         mSearchView.clearFocus();
 
+        updatePagerArrowsVisibility(0);
+
 
     }
 
@@ -390,7 +402,9 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
 
     private void updatePagerArrowsVisibility(int position) {
 
-        if (mProductList == null) {
+        if (mProductList == null || mProductList.size() == 0) {
+            mLeftArrowImageView.setVisibility(View.INVISIBLE);
+            mRightArrowImageView.setVisibility(View.INVISIBLE);
             return;
         }
 
