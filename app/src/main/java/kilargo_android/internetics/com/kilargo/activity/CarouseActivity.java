@@ -193,6 +193,7 @@ public class CarouseActivity extends BaseActivity implements ViewPager.OnPageCha
         return orientation;
     }
 
+    boolean mIsUsingRotatePleaseRightImage = true;
     private void updateContextHelp(double gravityY) {
 
         int deviceOrientation = getScreenOrientation();
@@ -218,8 +219,16 @@ public class CarouseActivity extends BaseActivity implements ViewPager.OnPageCha
 
             if (deviceOrientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE) {
                 params.gravity = Gravity.CENTER_VERTICAL | Gravity.RIGHT;
+                if (mIsUsingRotatePleaseRightImage == false) {
+                    mRotationInstructionImageView.setImageDrawable(getResources().getDrawable(R.drawable.rotate_please_right));
+                    mIsUsingRotatePleaseRightImage = true;
+                }
             } else {
                 params.gravity = Gravity.CENTER_VERTICAL | Gravity.LEFT;
+                if (mIsUsingRotatePleaseRightImage) {
+                    mRotationInstructionImageView.setImageDrawable(getResources().getDrawable(R.drawable.rotate_please_left));
+                    mIsUsingRotatePleaseRightImage = false;
+                }
             }
 
             mRotationInstructionImageView.setLayoutParams(params);
@@ -238,8 +247,16 @@ public class CarouseActivity extends BaseActivity implements ViewPager.OnPageCha
 
             if (deviceOrientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE) {
                 params.gravity = Gravity.CENTER_VERTICAL | Gravity.LEFT;
+                if (mIsUsingRotatePleaseRightImage) {
+                    mRotationInstructionImageView.setImageDrawable(getResources().getDrawable(R.drawable.rotate_please_left));
+                    mIsUsingRotatePleaseRightImage = false;
+                }
             } else {
                 params.gravity = Gravity.CENTER_VERTICAL | Gravity.RIGHT;
+                if (mIsUsingRotatePleaseRightImage == false) {
+                    mRotationInstructionImageView.setImageDrawable(getResources().getDrawable(R.drawable.rotate_please_right));
+                    mIsUsingRotatePleaseRightImage = true;
+                }
             }
             mRotationInstructionImageView.setLayoutParams(params);
 
