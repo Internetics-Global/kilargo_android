@@ -19,23 +19,30 @@
         android:layout_height="match_parent">
 
 
-        <ImageButton
-            android:layout_marginLeft="28dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/info_button"
-            android:layout_width="112dp"
-            android:layout_height="31dp"
-            android:layout_gravity="left"
-            android:id="@+id/product_info_imagebutton"/>
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <ImageButton
-            android:layout_marginRight="28dp"
-            android:layout_marginTop="20dp"
-            android:src="@drawable/installation_button"
-            android:layout_width="112dp"
-            android:layout_height="31dp"
-            android:layout_gravity="right"
-            android:id="@+id/product_installation_imagebutton"/>
+            <ImageButton
+                android:background="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/info_button"
+                android:layout_width="130dp"
+                android:layout_height="36dp"
+                android:id="@+id/product_info_imagebutton"/>
+
+            <ImageButton
+                android:background="@null"
+                android:scaleType="fitCenter"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/installation_button"
+                android:layout_width="130dp"
+                android:layout_height="36dp"
+                android:id="@+id/product_installation_imagebutton"/>
+
+        </LinearLayout>
 
 
         <TextView

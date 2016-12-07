@@ -113,6 +113,7 @@ public class SubFragment extends BaseFragment {
                 getActivity().getSupportFragmentManager().popBackStackImmediate();
             }
         });
+        increaseControlTouchArea(mBackTextView,30);
 
     }
 

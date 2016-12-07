@@ -120,7 +120,7 @@ public class MainFragment extends BaseFragment {
                 drawerButtonClicked();
             }
         });
-        increaseControlTouchArea(mBackTextView,40);
+        increaseControlTouchArea(mBackTextView,30);
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

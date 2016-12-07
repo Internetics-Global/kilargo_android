@@ -151,6 +151,7 @@ public class ProductFragment extends BaseFragment implements ViewPager.OnPageCha
                 backButtonClicked();
             }
         });
+        increaseControlTouchArea(mBackTextView,30);
 
         if (mProductList != null && mProductList.size()>0) {
             mProductNameTextView.setText(mProductList.get(0).mProductName + " - " + mProductList.get(0).mSystemNumber);
