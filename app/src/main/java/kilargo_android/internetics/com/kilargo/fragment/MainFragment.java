@@ -371,6 +371,7 @@ public class MainFragment extends BaseFragment {
             }
 
             mAVLoadingIndicatorDialog.setMessage("Loading...");
+            mAVLoadingIndicatorDialog.setCancelable(false);
             mAVLoadingIndicatorDialog.show();
 
 

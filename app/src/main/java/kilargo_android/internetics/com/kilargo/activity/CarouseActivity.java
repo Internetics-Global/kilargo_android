@@ -14,12 +14,14 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -124,7 +126,7 @@ public class CarouseActivity extends BaseActivity implements ViewPager.OnPageCha
         float X = sensorEvent.values[0];
         float Y = sensorEvent.values[1];
         float Z = sensorEvent.values[2];
-        Log.d("ccaa","X="+X + " Y=" + Y + " Z=" + Z);
+        //Log.d("ccaa","X="+X + " Y=" + Y + " Z=" + Z);
 
         updateContextHelp(Y);
 
@@ -156,13 +158,36 @@ public class CarouseActivity extends BaseActivity implements ViewPager.OnPageCha
 
             if (mRotationInstructionImageView.getVisibility() == View.VISIBLE) {
                 mRotationInstructionImageView.setVisibility(View.INVISIBLE);
+
             }
 
-        } else if (Math.abs(gravityY) > 3)  {
+        } else if (gravityY > 2.3)  {
 
             if (mRotationInstructionImageView.getVisibility() == View.INVISIBLE) {
                 mRotationInstructionImageView.setVisibility(View.VISIBLE);
+
+
             }
+
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mRotationInstructionImageView.getLayoutParams();
+            params.gravity = Gravity.CENTER_VERTICAL | Gravity.LEFT;
+            mRotationInstructionImageView.setLayoutParams(params);
+
+
+
+        } else if (gravityY < -2.3)  {
+
+            if (mRotationInstructionImageView.getVisibility() == View.INVISIBLE) {
+                mRotationInstructionImageView.setVisibility(View.VISIBLE);
+
+
+            }
+
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mRotationInstructionImageView.getLayoutParams();
+            params.gravity = Gravity.CENTER_VERTICAL | Gravity.RIGHT;
+            mRotationInstructionImageView.setLayoutParams(params);
+
+
 
         }
     }
