@@ -2,6 +2,7 @@ package kilargo_android.internetics.com.kilargo.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -13,6 +14,7 @@ import android.os.HandlerThread;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -132,29 +134,72 @@ public class CarouseActivity extends BaseActivity implements ViewPager.OnPageCha
 
     }
 
-    public int getDeviceDefaultOrientation() {
-
-        WindowManager windowManager =  (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-
-        Configuration config = getResources().getConfiguration();
-
-        int rotation = windowManager.getDefaultDisplay().getRotation();
-
-        if ( ((rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) &&
-                config.orientation == Configuration.ORIENTATION_LANDSCAPE)
-                || ((rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) &&
-                config.orientation == Configuration.ORIENTATION_PORTRAIT)) {
-            return Configuration.ORIENTATION_LANDSCAPE;
-        } else {
-            return Configuration.ORIENTATION_PORTRAIT;
+    private int getScreenOrientation() {
+        int rotation = getWindowManager().getDefaultDisplay().getRotation();
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+        int orientation;
+        // if the device's natural orientation is portrait:
+        if ((rotation == Surface.ROTATION_0
+                || rotation == Surface.ROTATION_180) && height > width ||
+                (rotation == Surface.ROTATION_90
+                        || rotation == Surface.ROTATION_270) && width > height) {
+            switch(rotation) {
+                case Surface.ROTATION_0:
+                    orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+                    break;
+                case Surface.ROTATION_90:
+                    orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+                    break;
+                case Surface.ROTATION_180:
+                    orientation =
+                            ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
+                    break;
+                case Surface.ROTATION_270:
+                    orientation =
+                            ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
+                    break;
+                default:
+                    orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+                    break;
+            }
         }
+        // if the device's natural orientation is landscape or if the device
+        // is square:
+        else {
+            switch(rotation) {
+                case Surface.ROTATION_0:
+                    orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+                    break;
+                case Surface.ROTATION_90:
+                    orientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+                    break;
+                case Surface.ROTATION_180:
+                    orientation =
+                            ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
+                    break;
+                case Surface.ROTATION_270:
+                    orientation =
+                            ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT;
+                    break;
+                default:
+                    orientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+                    break;
+            }
+        }
+
+        return orientation;
     }
 
     private void updateContextHelp(double gravityY) {
 
-        //Log.d("ccaa","position is " + getDeviceDefaultOrientation());
+        int deviceOrientation = getScreenOrientation();
 
-        if (Math.abs(gravityY) < 2) {
+        Log.d("ccaa","getScreenOrientation (LANDSCAPE = 0,REVERSE_LANDSCAPE=8) is " + deviceOrientation + " gravityY=" + gravityY);
+
+        if (Math.abs(gravityY) < 1.8) {
 
             if (mRotationInstructionImageView.getVisibility() == View.VISIBLE) {
                 mRotationInstructionImageView.setVisibility(View.INVISIBLE);
@@ -170,7 +215,13 @@ public class CarouseActivity extends BaseActivity implements ViewPager.OnPageCha
             }
 
             FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mRotationInstructionImageView.getLayoutParams();
-            params.gravity = Gravity.CENTER_VERTICAL | Gravity.LEFT;
+
+            if (deviceOrientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE) {
+                params.gravity = Gravity.CENTER_VERTICAL | Gravity.RIGHT;
+            } else {
+                params.gravity = Gravity.CENTER_VERTICAL | Gravity.LEFT;
+            }
+
             mRotationInstructionImageView.setLayoutParams(params);
 
 
@@ -184,7 +235,12 @@ public class CarouseActivity extends BaseActivity implements ViewPager.OnPageCha
             }
 
             FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mRotationInstructionImageView.getLayoutParams();
-            params.gravity = Gravity.CENTER_VERTICAL | Gravity.RIGHT;
+
+            if (deviceOrientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE) {
+                params.gravity = Gravity.CENTER_VERTICAL | Gravity.LEFT;
+            } else {
+                params.gravity = Gravity.CENTER_VERTICAL | Gravity.RIGHT;
+            }
             mRotationInstructionImageView.setLayoutParams(params);
 
 
