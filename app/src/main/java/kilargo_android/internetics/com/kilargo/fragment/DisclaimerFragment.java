@@ -12,6 +12,7 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import kilargo_android.internetics.com.kilargo.R;
+import kilargo_android.internetics.com.kilargo.activity.MainActivity;
 
 /**
  * Created by BourneWang on 6/07/2016.
@@ -38,13 +39,13 @@ public class DisclaimerFragment extends BaseFragment {
 
         mBackTextView.setVisibility(View.VISIBLE);
         mBackTextView.setText("Back");
-        Drawable img = getResources().getDrawable(R.drawable.back_arrow );
+        Drawable img = getResources().getDrawable(R.drawable.left_setting );
         img.setBounds( 0, 0, 24, 24 );
         mBackTextView.setCompoundDrawablesWithIntrinsicBounds( img, null, null, null);
         mBackTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                ((MainActivity)getActivity()).switchDrawer();
             }
         });
 

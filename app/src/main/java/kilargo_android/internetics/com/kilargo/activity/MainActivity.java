@@ -212,7 +212,7 @@ public class MainActivity extends BaseActivity implements android.support.v4.app
 
         closeDrawer();
 
-        getSupportFragmentManager().popBackStack("HomeFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        getSupportFragmentManager().popBackStack("MainFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         Fragment newFragment = new HomeFragment();
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -241,6 +241,14 @@ public class MainActivity extends BaseActivity implements android.support.v4.app
     public void productsButtonClicked() {
 
         closeDrawer();
+
+        getSupportFragmentManager().popBackStack("MainFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        Fragment newFragment = new MainFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, newFragment);
+        transaction.addToBackStack("MainFragment" + System.currentTimeMillis());
+        transaction.commit();
     }
 
     /*
