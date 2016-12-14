@@ -23,6 +23,7 @@ public class MoreFragment extends BaseFragment {
     @Bind(R.id.button_setting_products)                  Button         mProductsButton;
     @Bind(R.id.button_setting_about)                     Button         mAboutButton;
     @Bind(R.id.button_setting_about_app)                 Button         mAboutAppButton;
+    @Bind(R.id.button_setting_disclaimer)                Button         mDisclaimerAppButton;
     @Bind(R.id.version_info)                             TextView       mVersionTextView;
     @Bind(R.id.back_textview)                            TextView       mNaviBarBackTextView;
     @Bind(R.id.refresh_button)                           ImageButton    mRefreshButton;
@@ -67,6 +68,13 @@ public class MoreFragment extends BaseFragment {
             public void onClick(View v) {
                 ((MainActivity)getActivity()).aboutAppButtonClicked();
 
+            }
+        });
+
+        mDisclaimerAppButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity)getActivity()).disclaimerButtonClicked();
             }
         });
 

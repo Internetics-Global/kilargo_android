@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import kilargo_android.internetics.com.kilargo.R;
 import kilargo_android.internetics.com.kilargo.fragment.AboutFragment;
+import kilargo_android.internetics.com.kilargo.fragment.DisclaimerFragment;
 import kilargo_android.internetics.com.kilargo.fragment.HomeFragment;
 import kilargo_android.internetics.com.kilargo.fragment.MainFragment;
 import kilargo_android.internetics.com.kilargo.fragment.MoreFragment;
@@ -221,6 +222,21 @@ public class MainActivity extends BaseActivity implements android.support.v4.app
 
     }
 
+    public void disclaimerButtonClicked() {
+
+        closeDrawer();
+
+        getSupportFragmentManager().popBackStack("MainFragment", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        Fragment newFragment = new DisclaimerFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, newFragment);
+        transaction.addToBackStack("DisclaimerFragment" + System.currentTimeMillis());
+        transaction.commit();
+
+
+    }
+
 
     public void productsButtonClicked() {
 
@@ -288,6 +304,7 @@ public class MainActivity extends BaseActivity implements android.support.v4.app
 
 
     }
+
 
 
 }

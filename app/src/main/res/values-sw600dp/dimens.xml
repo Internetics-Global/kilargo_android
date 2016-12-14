@@ -6,4 +6,5 @@
     <dimen name="product_info_dialog_height">300dp</dimen>
     <dimen name="product_info_dialog_text_size">18sp</dimen>
     <dimen name="head_view_icon_margin">20dp</dimen>
+    <dimen name="disclaimer_text_size">24sp</dimen>
 </resources>

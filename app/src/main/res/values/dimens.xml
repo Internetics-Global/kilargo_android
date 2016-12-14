@@ -13,4 +13,5 @@
     <dimen name="logo_width">139dp</dimen>
     <dimen name="logo_height">48dp</dimen>
     <dimen name="popup_top_margin">20dp</dimen>
+    <dimen name="disclaimer_text_size">16sp</dimen>
 </resources>
